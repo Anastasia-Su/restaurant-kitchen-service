@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    Dish list
+    <a href="{% url 'kitchen:dish-create' %}" class="btn btn-primary link-to-page">
+      Create
+    </a>
+  </h1>
+  {% include "includes/search_form.html" %}
+
+  {% if dish_list %}
+    <ul>
+      {% for dish in dish_list %}
+        <li>
+          <a href="{% url "kitchen:dish-detail" pk=dish.id %}">{{ dish.id }}</a>
+          {{ dish.name }} ({{ dish.dish_type.name }})
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no dishes in this service.</p>
+  {% endif %}
+{% endblock %}
