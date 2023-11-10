@@ -1,33 +1,222 @@
-{% extends "base.html" %}
+{#{% extends "base.html" %}#}
+{##}
+{#{% block content %}#}
+{#  <h1>#}
+{#    Username: {{ cook.username }}#}
+{#    <a href="{% url 'kitchen:cook-delete' pk=cook.id %}" class="btn btn-danger link-to-page">#}
+{#      Delete#}
+{#    </a>#}
+{##}
+{#    <a href="{% url 'kitchen:cook-update' pk=cook.id %}" class="btn btn-secondary link-to-page">#}
+{#      Update#}
+{#    </a>#}
+{#  </h1>#}
+{##}
+{#  <p><strong>First name:</strong> {{ cook.first_name }}</p>#}
+{#  <p><strong>Last name:</strong> {{ cook.last_name }}</p>#}
+{#  <p><strong>Years of experience:</strong> {{ cook.get_years_of_experience }}</p>#}
+{#  <p><strong>Is staff:</strong> {{ cook.is_staff }}</p>#}
+{##}
+{#  <div class="ml-3">#}
+{#    <h4>Dishes</h4>#}
+{##}
+{#    {% for dish in cook.dishes.all %}#}
+{#        <hr>#}
+{#        <p><strong>Name:</strong> {{ dish.name }}</p>#}
+{#        <p><strong>Dish Type:</strong> {{ dish.dish_type.name }}</p>#}
+{#        <p class="text-muted"><strong>Id:</strong> {{dish.id}}</p>#}
+{##}
+{#    {% empty %}#}
+{#      <p>No dishes!</p>#}
+{#    {% endfor %}#}
+{#  </div>#}
+{#{% endblock %}#}
+
+
+
+
+{% extends 'layouts/base_sections.html' %}
+{% load static %}
+
+{% block title %}{% endblock title %}
+
+{% block body %} class="blog-author" {% endblock body %}
+
+{% block header %}
+{% endblock header %}
 
 {% block content %}
-  <h1>
-    Username: {{ cook.username }}
-    <a href="{% url 'kitchen:cook-delete' pk=cook.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
 
-    <a href="{% url 'kitchen:cook-update' pk=cook.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
+  <!-- START Testimonials w/ user image & text & info -->
+  <section class="py-sm-7 py-5 position-relative">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 mx-auto">
+          <div class="row py-lg-7 py-5">
+            <div class="col-lg-3 col-md-5 position-relative my-auto">
+              <img
+                  class="img border-radius-lg max-width-200 w-100 position-relative z-index-2"
+                  src="{% static 'css/img/bruce-mars.jpg' %}"
+                  alt="bruce">
+            </div>
+            <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mt-sm-0 mt-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="mb-0">{{ cook.first_name }} {{ cook.last_name }}</h4>
+                <div class="d-block">
+                  <a href="{% url 'kitchen:cook-update' pk=cook.id %}">
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-warning text-nowrap mb-0"
+                        style="margin-right: 30px;">
+                      Update
+                    </button>
+                  </a>
+                  <a href="#">
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-danger text-nowrap mb-0"
+                        id="openModalBtn"
+{#                        data-toggle="modal" data-target="#my-modal"#}
+                    >
+                      Delete
+                    </button>
+                  </a>
 
-  <p><strong>First name:</strong> {{ cook.first_name }}</p>
-  <p><strong>Last name:</strong> {{ cook.last_name }}</p>
-  <p><strong>Years of experience:</strong> {{ cook.get_years_of_experience }}</p>
-  <p><strong>Is staff:</strong> {{ cook.is_staff }}</p>
+                </div>
+              </div>
+              <div class="row mb-4">
+                <div class="col-auto">
+                  <span>Years of experience:</span>
+                  <span class="h6">
+                    {{ cook.get_years_of_experience }}
+                  </span>
+                  <br />
+                  <span>Dishes I cook:</span>
+                  <span class="h6">
+                    <a
+                        href="javascript:;"
+                        class="text-info toggle-link"
+                        data-target="dishes-content"
+                    >
+                      {{ cook.dishes.count }}
+                    </a>
 
-  <div class="ml-3">
-    <h4>Dishes</h4>
+                  </span>
+                </div>
+              </div>
+              <p class="text-lg mb-0">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Mollitia facere dolore voluptatum velit consequuntur dolor excepturi eum!
+                Nisi ratione voluptas fugit, blanditiis,
+                dicta consequatur delectus quisquam dignissimos molestiae pariatur architecto.
+                Nemo nam ipsam reprehenderit labore!
+                <br/><br/>
 
-    {% for dish in cook.dishes.all %}
-        <hr>
-        <p><strong>Name:</strong> {{ dish.name }}</p>
-        <p><strong>Dish Type:</strong> {{ dish.dish_type.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{dish.id}}</p>
+                <div id="dishes-content" style="display: none;">
+                  {% for dish in cook.dishes.all %}
+                    <a
+                        href="{% url "kitchen:dish-detail" pk=dish.id %}"
+                        class="text-info icon-move-right"
+                        style="margin-top: 5px; display: inline-block;"
+                    >
+                        {{ dish.name }} ({{ dish.dish_type.name }})
+                        <i class="fas fa-arrow-right text-sm ms-1"></i>
 
-    {% empty %}
-      <p>No dishes!</p>
-    {% endfor %}
+                    </a>
+                    <br />
+                  {% endfor %}
+                </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h5 class="modal-title">Are you sure you want to delete?</h5>
+      </div>
+
+      <div class="modal-footer justify-content-center">
+          <form action="{% url 'kitchen:cook-delete' pk=cook.pk %}" method="post">
+          {% csrf_token %}
+
+          <button type="submit" class="btn btn-danger" id="deleteCookBtn">Delete</button>
+          <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
+          </form>
+      </div>
+    </div>
   </div>
-{% endblock %}
+</div>
+
+
+
+  {% endblock content %}
+
+  {% block footer %}
+  {% endblock footer %}
+
+
+{% block javascripts %}
+  <script>
+  function toggleContent(targetId) {
+    const targetElement = document.getElementById(targetId);
+    if (
+        targetElement.style.display === 'none' || targetElement.style.display === ''
+    ) {
+      targetElement.style.display = 'block';
+      localStorage.setItem(targetId, 'block');
+    } else {
+      targetElement.style.display = 'none';
+      localStorage.setItem(targetId, 'none');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleLink = document.querySelector('.toggle-link');
+    const targetId = toggleLink.getAttribute('data-target');
+    const storedState = localStorage.getItem(targetId);
+
+    if (storedState) {
+      document.getElementById(targetId).style.display = storedState;
+    }
+
+    toggleLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      toggleContent(targetId);
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var modal = document.querySelector('.modal');
+    var openModalBtn = document.getElementById('openModalBtn');
+
+    openModalBtn.addEventListener('click', function () {
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+
+      const backdrop = document.createElement('div');
+      backdrop.classList.add('modal-backdrop', 'fade', 'show');
+      document.body.appendChild(backdrop);
+    });
+
+    modal.addEventListener('click', function (event) {
+      if (event.target === modal || event.target.classList.contains('close')) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+
+        const backdrop = document.querySelector('.modal-backdrop');
+        document.body.removeChild(backdrop);
+      }
+    });
+  });
+</script>
+
+{% endblock javascripts %}

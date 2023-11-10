@@ -1,41 +1,227 @@
-{% extends "base.html" %}
+{#{% extends "base.html" %}#}
+
+{#{% block content %}#}
+{#    <h1>#}
+{#      Cook List#}
+{#      <a href="{% url 'kitchen:cook-create' %}" class="btn btn-primary link-to-page">#}
+{#        Create#}
+{#      </a>#}
+{#    </h1>#}
+{#    {% include "includes/search_form.html" %}#}
+{#    <br />#}
+{##}
+{#    {% if cook_list %}#}
+{#    <table class="table">#}
+{#      <tr>#}
+{#        <th>ID</th>#}
+{#        <th>Username</th>#}
+{#        <th>First name</th>#}
+{#        <th>Last name</th>#}
+{#        <th>Years of experience</th>#}
+{#      </tr>#}
+{##}
+{#    {% for cook in cook_list %}#}
+{#      <tr>#}
+{#        <td>{{ cook.id }}</td>#}
+{#        <td>#}
+{#          <a href="{{ cook.get_absolute_url }}">{{ cook.username }}#}
+{#            {% if user == cook %} (Me){% endif %}#}
+{#          </a>#}
+{#        </td>#}
+{#        <td>{{ cook.first_name }}</td>#}
+{#        <td>{{ cook.last_name }}</td>#}
+{#        <td>{{ cook.get_years_of_experience }}</td>#}
+{#      </tr>#}
+{#    {% endfor %}#}
+{#    </table>#}
+{##}
+{#    {% else %}#}
+{#      <p>There are no cooks in the service.</p>#}
+{#    {% endif %}#}
+{#{% endblock %}#}
+
+
+{% extends 'layouts/base_sections.html' %}
+{% load static %}
+
+{% block title %}{% endblock title %}
+
+{% block body %} class="about-us" {% endblock body %}
+
+{% block header %}
+
+{% endblock header %}
 
 {% block content %}
-    <h1>
-      Cook List
-      <a href="{% url 'kitchen:cook-create' %}" class="btn btn-primary link-to-page">
-        Create
-      </a>
-    </h1>
-    {% include "includes/search_form.html" %}
-    <br />
+  {% include "includes/search_form.html" %}#}
 
-    {% if cook_list %}
-    <table class="table">
-      <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Years of experience</th>
-      </tr>
 
-    {% for cook in cook_list %}
-      <tr>
-        <td>{{ cook.id }}</td>
-        <td>
-          <a href="{{ cook.get_absolute_url }}">{{ cook.username }}
-            {% if user == cook %} (Me){% endif %}
-          </a>
-        </td>
-        <td>{{ cook.first_name }}</td>
-        <td>{{ cook.last_name }}</td>
-        <td>{{ cook.get_years_of_experience }}</td>
-      </tr>
-    {% endfor %}
-    </table>
+  <section class="pt-sm-8 pb-5 position-relative bg-gradient-dark">
+    <div class="position-absolute w-100 z-inde-1 top-0 mt-n3">
+      <svg width="100%" viewBox="0 -2 1920 157" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <title>wave-down</title>
+        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g fill="#FFFFFF" fill-rule="nonzero">
+            <g id="wave-down">
+              <path d="M0,60.8320331 C299.333333,115.127115 618.333333,111.165365 959,47.8320321 C1299.66667,-15.5013009 1620.66667,-15.2062179 1920,47.8320331 L1920,156.389409 L0,156.389409 L0,60.8320331 Z" id="Path-Copy-2" transform="translate(960.000000, 78.416017) rotate(180.000000) translate(-960.000000, -78.416017) "></path>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 text-start mb-5 mt-5">
+          <div class="d-flex justify-content-left align-items-center mb-2">
+          <h3 class="text-white z-index-1 position-relative">Cook Team</h3>
 
-    {% else %}
-      <p>There are no cooks in the service.</p>
-    {% endif %}
-{% endblock %}
+          <div class="d-block" style="margin-left: 30px;">
+              <a href="{% url 'kitchen:cook-create' %}">
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-success text-nowrap mb-0"
+                    style="margin-right: 30px;">
+                  Create cook
+                </button>
+              </a>
+          </div>
+            </div>
+
+          <p class="text-white opacity-8 mb-0">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+            Mollitia facere dolore voluptatum velit consequuntur dolor excepturi eum!
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        {% for cook in cook_list %}
+
+          <div class="col-lg-6 col-12" style="margin: 7px 0;">
+            <div class="card card-profile overflow-hidden">
+              <div class="row">
+                <div
+                    class="col-lg-4 col-md-6 col-12 pe-lg-0"
+                    >
+                  <a href="javascript:;">
+                    <div class="p-3 pe-md-0">
+                      <img
+                          class="w-100 border-radius-md"
+                          src="{% static 'css/img/kal-visuals-square.jpg' %}" alt="image">
+                    </div>
+                  </a>
+                </div>
+                <div class="col-lg-8 col-md-6 col-12 ps-lg-0 my-auto">
+                  <div class="card-body">
+                    <h5 class="mb-0">{{ cook.first_name }} {{ cook.last_name }}</h5>
+                    <h6 class="text-info">
+                      <a
+                          href="{{ cook.get_absolute_url }}"
+                          class="text-info">
+                          {{ cook.username }}
+                          </a>
+                    </h6>
+                    <p class="mb-0">
+                      Years of experience: {{ cook.get_years_of_experience }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endblock content %}
+
+  {% block javascrips %}
+
+    <script>
+      // get the element to animate
+      var element = document.getElementById('count-stats');
+      var elementHeight = element.clientHeight;
+
+      // listen for scroll event and call animate function
+
+      document.addEventListener('scroll', animate);
+
+      // check if element is in view
+      function inView() {
+        // get window height
+        var windowHeight = window.innerHeight;
+        // get number of pixels that the document is scrolled
+        var scrollY = window.scrollY || window.pageYOffset;
+        // get current scroll position (distance from the top of the page to the bottom of the current viewport)
+        var scrollPosition = scrollY + windowHeight;
+        // get element position (distance from the top of the page to the bottom of the element)
+        var elementPosition = element.getBoundingClientRect().top + scrollY + elementHeight;
+
+        // is scroll position greater than element position? (is element in view?)
+        if (scrollPosition > elementPosition) {
+          return true;
+        }
+
+        return false;
+      }
+
+      var animateComplete = true;
+      // animate element when it is in view
+      function animate() {
+
+        // is element in view?
+        if (inView()) {
+          if (animateComplete) {
+            if (document.getElementById('state1')) {
+              const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));
+              if (!countUp.error) {
+                countUp.start();
+              } else {
+                console.error(countUp.error);
+              }
+            }
+            if (document.getElementById('state2')) {
+              const countUp1 = new CountUp('state2', document.getElementById("state2").getAttribute("countTo"));
+              if (!countUp1.error) {
+                countUp1.start();
+              } else {
+                console.error(countUp1.error);
+              }
+            }
+            if (document.getElementById('state3')) {
+              const countUp2 = new CountUp('state3', document.getElementById("state3").getAttribute("countTo"));
+              if (!countUp2.error) {
+                countUp2.start();
+              } else {
+                console.error(countUp2.error);
+              };
+            }
+            animateComplete = false;
+          }
+        }
+      }
+
+      if (document.getElementById('typed')) {
+        var typed = new Typed("#typed", {
+          stringsElement: '#typed-strings',
+          typeSpeed: 90,
+          backSpeed: 90,
+          backDelay: 200,
+          startDelay: 500,
+          loop: true
+        });
+      }
+    </script>
+    <script>
+      if (document.getElementsByClassName('page-header')) {
+        window.onscroll = debounce(function() {
+          var scrollPosition = window.pageYOffset;
+          var bgParallax = document.querySelector('.page-header');
+          var oVal = (window.scrollY / 3);
+          bgParallax.style.transform = 'translate3d(0,' + oVal + 'px,0)';
+        }, 6);
+      }
+    </script>
+
+
+  {% endblock javascrips %}

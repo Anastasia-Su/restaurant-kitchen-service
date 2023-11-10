@@ -5,6 +5,9 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
 from .forms import (
     DishTypeSearchForm,
     CookSearchForm,
@@ -116,7 +119,7 @@ class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class CookListView(LoginRequiredMixin, generic.ListView):
     model = Cook
-    paginate_by = 5
+    # paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CookListView, self).get_context_data(**kwargs)
@@ -147,7 +150,10 @@ class CookCreateView(LoginRequiredMixin, generic.CreateView):
 class CookUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Cook
     form_class = CookForm
-    success_url = reverse_lazy("kitchen:cook-list")
+
+    def get_success_url(self):
+        return reverse_lazy("kitchen:cook-detail", kwargs={"pk": self.object.id})
+
 
 
 class CookDeleteView(LoginRequiredMixin, generic.DeleteView):

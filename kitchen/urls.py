@@ -17,6 +17,7 @@ from .views import (
     CookCreateView,
     CookUpdateView,
     CookDeleteView,
+    # delete_cook,
 )
 
 urlpatterns = [
@@ -64,6 +65,7 @@ urlpatterns = [
         CookDeleteView.as_view(),
         name="cook-delete",
     ),
+    # path('cook/<int:pk>/delete/ajax/', delete_cook, name='cook-delete'),
 ]
 
 app_name = "kitchen"

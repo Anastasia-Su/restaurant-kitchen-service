@@ -1,17 +1,100 @@
-{% extends "base.html" %}
+{#{% extends "base.html" %}#}
+{##}
+{#{% block content %}#}
+{#    <h1>Kitchen Service Home</h1>#}
+{#    <p>Welcome to Best Kitchen Ever!</p>#}
+{#    <h2>Dynamic content</h2>#}
+{#    <p>The Kitchen service has the following record counts:</p>#}
+{#    <ul>#}
+{#        <li><strong>Dishes:</strong> {{ num_dishes }}</li>#}
+{#        <li><strong>Cooks:</strong> {{ num_cooks }}</li>#}
+{#        <li><strong>Dish Types:</strong> {{ num_dish_types }}</li>#}
+{#    </ul>#}
+{##}
+{#    <p>You have visited this page#}
+{#        {{ num_visits }} time{{ num_visits|pluralize }}.#}
+{#    </p>#}
+{#{% endblock %}#}
 
+
+{% extends 'layouts/base_sections.html' %}
+{% load static %}
+
+{% block title %} Kitchen Service {% endblock title %}
+
+{% block body %} class="index-page bg-gray-200" {% endblock body %}
+{% block header %}{% endblock header %}
 {% block content %}
-    <h1>Kitchen Service Home</h1>
-    <p>Welcome to Best Kitchen Ever!</p>
-    <h2>Dynamic content</h2>
-    <p>The Kitchen service has the following record counts:</p>
-    <ul>
-        <li><strong>Dishes:</strong> {{ num_dishes }}</li>
-        <li><strong>Cooks:</strong> {{ num_cooks }}</li>
-        <li><strong>Dish Types:</strong> {{ num_dish_types }}</li>
-    </ul>
 
-    <p>You have visited this page
-        {{ num_visits }} time{{ num_visits|pluralize }}.
-    </p>
+<header class="header-2">
+  <div
+      class="page-header min-vh-75 relative"
+      style="
+      background-image: url({% static 'css/img/curved-images/food_trimmed.png' %});
+      background-size: cover;
+      background-repeat: no-repeat;
+">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7 text-center mx-auto">
+          <h1
+              class="text-white pt-3 mt-n5"
+              style="position: relative; bottom: 70px;">
+            KITCHEN
+          </h1>
+          <p
+              class="lead text-white mt-3"
+              style="position: relative; bottom: 70px;">
+            Welcome to Best Kitchen Ever!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<section class="pt-3 pb-4" id="count-stats">
+  <div class="container">
+    <div class="row">
+      <div>
+        <div class="row">
+          <div class="col-md-4 position-relative">
+            <div class="p-3 text-center">
+              <h1 class="text-gradient text-primary">
+                <span id="state1" countTo="70">{{ num_cooks }}</span>
+              </h1>
+              <h5 class="mt-3">Cooks</h5>
+              <p class="text-sm">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Mollitia facere dolore voluptatum velit consequuntur dolor excepturi eum!
+                </p>
+            </div>
+            <hr class="vertical dark">
+          </div>
+          <div class="col-md-4 position-relative">
+            <div class="p-3 text-center">
+              <h1 class="text-gradient text-primary">
+                <span id="state2" countTo="15">{{ num_dish_types }}</span>
+              </h1>
+              <h5 class="mt-3">Dish Types</h5>
+              <p class="text-sm">Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Mollitia facere dolore voluptatum velit consequuntur dolor excepturi eum! </p>
+            </div>
+            <hr class="vertical dark">
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 text-center">
+              <h1 class="text-gradient text-primary" id="state3"
+                  countTo="4">{{ num_dishes }}</h1>
+              <h5 class="mt-3">Dishes</h5>
+              <p class="text-sm">Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Mollitia facere dolore voluptatum velit consequuntur dolor excepturi eum! </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}
