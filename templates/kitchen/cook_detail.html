@@ -47,9 +47,9 @@
 
 {% block content %}
 
-  <!-- START Testimonials w/ user image & text & info -->
+
   <section class="py-sm-7 py-5 position-relative">
-    <div class="container">
+    <div class="container" id="cooks-container">
       <div class="row">
         <div class="col-12 mx-auto">
           <div class="row py-lg-7 py-5">
@@ -75,9 +75,7 @@
                     <button
                         type="button"
                         class="btn btn-sm btn-outline-danger text-nowrap mb-0"
-                        id="openModalBtn"
-{#                        data-toggle="modal" data-target="#my-modal"#}
-                    >
+                        id="openModalBtn">
                       Delete
                     </button>
                   </a>
@@ -117,11 +115,9 @@
                     <a
                         href="{% url "kitchen:dish-detail" pk=dish.id %}"
                         class="text-info icon-move-right"
-                        style="margin-top: 5px; display: inline-block;"
-                    >
+                        style="margin-top: 5px; display: inline-block;">
                         {{ dish.name }} ({{ dish.dish_type.name }})
                         <i class="fas fa-arrow-right text-sm ms-1"></i>
-
                     </a>
                     <br />
                   {% endfor %}
@@ -134,32 +130,17 @@
     </div>
   </section>
 
+{% url 'kitchen:cook-delete' pk=cook.pk as deleteCookUrl %}
+{% with formAction=deleteCookUrl %}
+  {% include 'includes/confirm_delete_modal.html' with formAction=formAction %}
+{% endwith %}
 
-<div class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header justify-content-center">
-        <h5 class="modal-title">Are you sure you want to delete?</h5>
-      </div>
+  {% include 'includes/confirm_delete_modal.html' %}
 
-      <div class="modal-footer justify-content-center">
-          <form action="{% url 'kitchen:cook-delete' pk=cook.pk %}" method="post">
-          {% csrf_token %}
+{% endblock content %}
 
-          <button type="submit" class="btn btn-danger" id="deleteCookBtn">Delete</button>
-          <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
-          </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-  {% endblock content %}
-
-  {% block footer %}
-  {% endblock footer %}
+{% block footer %}
+{% endblock footer %}
 
 
 {% block javascripts %}
@@ -218,5 +199,7 @@
     });
   });
 </script>
+
+
 
 {% endblock javascripts %}
