@@ -5,8 +5,6 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
 
 from .forms import (
     DishTypeSearchForm,
@@ -113,7 +111,6 @@ class DishCreateView(LoginRequiredMixin, generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add additional context data if needed
         return context
 
     def get(self, request, *args, **kwargs):
@@ -130,7 +127,9 @@ class DishCreateView(LoginRequiredMixin, generic.CreateView):
 class DishUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Dish
     form_class = DishForm
-    success_url = reverse_lazy("kitchen:dish-list")
+
+    def get_success_url(self):
+        return reverse_lazy("kitchen:dish-detail", kwargs={"pk": self.object.id})
 
 
 class DishDeleteView(LoginRequiredMixin, generic.DeleteView):

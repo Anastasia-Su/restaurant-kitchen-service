@@ -141,7 +141,14 @@
 
                   <li class="list-group-item d-flex justify-content-between align-items-center">
 
-                    <h5>{{ dish.name }} ({{ dish.dish_type.name }})</h5>
+                    <h5>
+                      <a
+                          href="{% url 'kitchen:dish-detail' pk=dish.id %}"
+                          class="text-info">
+                        {{ dish.name }}
+                      </a>
+                      ({{ dish.dish_type.name }})
+                    </h5>
                     <div class="d-flex justify-content-between align-items-center mb-2">
 
                       <div class="d-block">

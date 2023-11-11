@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from kitchen.models import DishType, Dish, Cook
 
 
+
 class DishForm(forms.ModelForm):
     cooks = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),

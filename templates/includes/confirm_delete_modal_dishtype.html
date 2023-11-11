@@ -16,7 +16,6 @@
                {% if dishtype.id %}
                     action="{% url 'kitchen:dishtype-delete' pk=dishtype.id %}"
                 {% endif %}
-{#              action="{% url 'kitchen:dishtype-delete' pk=dishtype.id %}"#}
               method="post">
             {% csrf_token %}
 
