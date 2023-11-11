@@ -21,11 +21,11 @@
 {#  </ul>#}
 
 
-  <section class="py-7">
+  <section class="py-1">
   <div class="container">
     <div class="row justify-space-between py-2">
       <div class="col-lg-4 mx-auto">
-        <ul class="pagination pagination-primary m-4">
+        <ul class="pagination pagination-info m-4">
 
           {% if page_obj.has_previous %}
             <li class="page-item">
@@ -57,7 +57,10 @@
                 active
               {% endif %}">
               <a
-                class="page-link"
+                class="page-link
+                {% if page_number == page_obj.number %}
+                text-white
+                {% endif %}"
                 href="?page={{ page_number }}">
                 {{ page_number }}
               </a>

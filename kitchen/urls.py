@@ -16,12 +16,14 @@ from .views import (
     DishDeleteView,
     CookCreateView,
     CookUpdateView,
-    CookDeleteView,
+    CookDeleteView, RememberMeLoginView, SignUpView,
     # delete_cook,
 )
 
 urlpatterns = [
     path("", index, name="index"),
+    path('accounts/login/', RememberMeLoginView.as_view(), name='login'),
+    path('signup/', SignUpView.as_view(), name='signup'),
     path(
         "dishtypes/",
         DishTypeListView.as_view(),

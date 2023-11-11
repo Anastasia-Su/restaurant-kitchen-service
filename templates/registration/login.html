@@ -1,24 +1,115 @@
-{% extends "base.html" %}
+{#{% extends "base.html" %}#}
+{#{% load crispy_forms_filters %}#}
+{##}
+{#{% block content %}#}
+{##}
+{#{% if form.errors %}#}
+{#  <p>Your username and password didn't match. Please try again.</p>#}
+{#{% endif %}#}
+{##}
+{#<h1>Login</h1>#}
+{##}
+{#{% if next %}#}
+{#  <p>Please login to see this page.</p>#}
+{#{% endif %}#}
+{##}
+{#<form method="post" action="{% url 'login' %}">#}
+{#  {% csrf_token %}#}
+{#  {{ form|crispy }}#}
+{##}
+{#  <input type="submit" value="Login" class="btn btn-primary" />#}
+{#  <input type="hidden" name="next" value="{{ next }}" />#}
+{#</form>#}
+{##}
+{#{% endblock %}#}
+
+
+
+{% extends 'layouts/base_sections.html' %}
 {% load crispy_forms_filters %}
+{% load static %}
+
+{% block title %}{% endblock title %}
+{% block body %} class="sign-in-illustration" {% endblock body %}
+
+{% block header %}{% endblock header %}
 
 {% block content %}
 
-{% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+<section>
+  <div class="page-header min-vh-70">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto align-items-center">
+          <div class="card card-plain">
+            <div class="card-header pb-0 text-left">
+              <h4 class="font-weight-bolder">Log In</h4>
+            </div>
+            <div class="card-body">
+              <form method="post" action="{% url 'login' %}" role="form">
+                {% csrf_token %}
 
-<h1>Login</h1>
+                {% if form.non_field_errors %}
+                  {% for error in form.non_field_errors %}
+                    <span class="text-danger"> {{ error }} </span>
+                  {% endfor %}
+                {% endif %}
 
-{% if next %}
-  <p>Please login to see this page.</p>
-{% endif %}
+                {{ form|crispy }}
+{#                {% for field in form %}#}
+{#                  <div class="mb-3">#}
+{#                    {{ field }}#}
+{#                  </div>#}
+{#                  <span class="text-danger"> {{ field.errors }} </span>#}
+{#                {% endfor %}#}
+                <div class="form-check form-switch">
+                  <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="rememberMe"
+                      name="remember_me"
+                  >
+                  <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+                <a href="{% url 'password_reset' %}" class="text-primary text-gradient font-weight-bold">Forgot Password?</a>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Log in</button>
+                  <input type="hidden" name="next" value="{{ next }}" />
+                </div>
+              </form>
+            </div>
+            <div class="card-footer text-center pt-0 px-lg-2 px-1">
+              <p class="mb-4 text-sm mx-auto">
+                Don't have an account?
+{#                <a href="{% url 'register' %}" class="text-primary text-gradient font-weight-bold">Sign up</a>#}
+                <a href="{% url 'kitchen:signup' %}" class="text-primary text-gradient font-weight-bold">Sign
+                  up</a>
 
-<form method="post" action="{% url 'login' %}">
-  {% csrf_token %}
-  {{ form|crispy }}
+              </p>
+            </div>
+          </div>
+        </div>
 
-  <input type="submit" value="Login" class="btn btn-primary" />
-  <input type="hidden" name="next" value="{{ next }}" />
-</form>
+        <div
+          class="col-lg-5 position-relative bg-cover px-0"
+          style="background-image: url('{% static 'css/img/curved-images/curved1.jpg' %}')">
 
-{% endblock %}
+          <div class="position-absolute z-index-2 w-100 h-100 top-0 start-0 d-lg-block d-none">
+            <img
+                src="{% static 'css/img/wave-1.svg' %}"
+                class="h-100 ms-n2"
+                alt="vertical-wave">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
+
+{% block footer %}
+
+{#{% include 'includes/footer_signin.html' %}#}
+
+{% endblock footer %}

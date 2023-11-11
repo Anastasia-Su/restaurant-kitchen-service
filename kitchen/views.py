@@ -4,6 +4,15 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.conf import settings
+
+from django.contrib.auth.views import LoginView
+from django.views import View
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic.edit import CreateView
+from django.contrib.auth.forms import UserCreationForm
 
 
 from .forms import (
@@ -36,6 +45,69 @@ def index(request):
     }
 
     return render(request, "kitchen/index.html", context=context)
+
+
+class SignUpView(CreateView):
+    form_class = CookCreationForm
+    template_name = 'registration/signup.html'
+    success_url = reverse_lazy('login')
+
+
+class LoginView:
+    pass
+
+
+class RememberMeLoginView(View):
+    template_name = 'registration/login.html'
+
+    def get(self, request, *args, **kwargs):
+        username = request.session.pop('remember_me_username', '')
+        password = request.session.pop('remember_me_password', '')
+        form = AuthenticationForm(initial={'username': username, 'password': password})
+        return render(request, self.template_name, {'form': form})
+
+        form.fields['username'].widget.attrs['placeholder'] = 'Username'
+        form.fields['password'].widget.attrs['placeholder'] = 'Password'
+
+    def post(self, request, *args, **kwargs):
+        form = AuthenticationForm(request, data=request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            remember_me = request.POST.get('remember_me')
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+
+                if remember_me:
+                    self.request.session.set_expiry(1209600)
+                    # request.session['remember_me_username'] = username
+                    # request.session['remember_me_password'] = password
+                else:
+                    self.request.session.set_expiry(0)
+                    # request.session.pop('remember_me_username', None)
+                    # request.session.pop('remember_me_password', None)
+
+                return redirect('/')
+
+        return render(request, self.template_name, {'form': form})
+
+#
+# class RememberMeLoginView(View):
+#     template_name = 'registration/login.html'
+#     success_url = reverse_lazy('/')  # Change 'home' to your actual home URL
+#
+#     def form_valid(self, form):
+#         remember_me = form.cleaned_data['remember_me']
+#
+#         if not remember_me:
+#             self.request.session.set_expiry(0)
+#
+#         login(self.request, form.get_user())
+#         return HttpResponseRedirect(self.get_success_url())
 
 
 class DishTypeListView(LoginRequiredMixin, generic.ListView):
@@ -163,7 +235,7 @@ class CookDetailView(LoginRequiredMixin, generic.DetailView):
     # queryset = Cook.objects.prefetch_related("dishes__dish_type")
 
 
-class CookCreateView(LoginRequiredMixin, generic.CreateView):
+class CookCreateView(generic.CreateView):
     model = Cook
     form_class = CookCreationForm
 

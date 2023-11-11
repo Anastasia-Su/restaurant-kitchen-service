@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
 
 from kitchen.models import DishType, Dish, Cook
+from django.contrib.auth.forms import AuthenticationForm
 
 
 
@@ -12,10 +13,6 @@ class DishForm(forms.ModelForm):
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
     )
-    # dish_type = forms.ModelChoiceField(
-    #     queryset=DishType.objects.all(),
-    #     widget=forms.Select,  # You can use a different widget if needed
-    # )
 
     class Meta:
         model = Dish
@@ -29,6 +26,12 @@ class CookForm(forms.ModelForm):
 
 
 class CookCreationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Remove password hints
+        for field_name in ['password1', 'password2', 'username']:
+            self.fields[field_name].help_text = ''
     class Meta(UserCreationForm.Meta):
         model = Cook
         fields = UserCreationForm.Meta.fields + (
@@ -36,6 +39,26 @@ class CookCreationForm(UserCreationForm):
             "first_name",
             "last_name",
         )
+
+
+# class CookRegisterForm(UserCreationForm):
+#     class Meta:
+#         model = Cook
+#         fields = ['username', 'email', 'password1', 'password2']
+#
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['username'].widget.attrs['placeholder'] = 'Username'
+#         self.fields['email'].widget.attrs['placeholder'] = 'Email'
+#         self.fields['password1'].widget.attrs['placeholder'] = 'Password'
+#         self.fields['password2'].widget.attrs['placeholder'] = 'Password confirm'
+
+
+# class CookLoginForm(AuthenticationForm):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['username'].widget.attrs['placeholder'] = 'Username'
+#         self.fields['password'].widget.attrs['placeholder'] = 'Password'
 
 
 class CookSearchForm(forms.Form):
