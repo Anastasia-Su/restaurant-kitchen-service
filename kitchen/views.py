@@ -51,11 +51,10 @@ class DishTypeListView(LoginRequiredMixin, generic.ListView):
         name = self.request.GET.get("name", "")
         context["search_form"] = DishTypeSearchForm(initial={"name": name})
 
-
         return context
 
     def get_queryset(self):
-        self.queryset = DishType.objects.order_by("name")
+        self.queryset = DishType.objects.all().order_by("name")
         form = DishTypeSearchForm(self.request.GET)
         if form.is_valid():
             return self.queryset.filter(name__icontains=form.cleaned_data["name"])
@@ -91,7 +90,8 @@ class DishListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        self.queryset = Dish.objects.all().select_related("dish_type")
+        self.queryset = Dish.objects.all().order_by("name")
+        # self.queryset = Dish.objects.select_related("dish_type")
         form = DishSearchForm(self.request.GET)
         if form.is_valid():
             return self.queryset.filter(name__icontains=form.cleaned_data["name"])
@@ -106,6 +106,23 @@ class DishCreateView(LoginRequiredMixin, generic.CreateView):
     model = Dish
     form_class = DishForm
     success_url = reverse_lazy("kitchen:dish-list")
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add additional context data if needed
+        return context
+
+    def get(self, request, *args, **kwargs):
+        # Additional logic for GET requests if needed
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        # Additional logic for POST requests if needed
+        return super().post(request, *args, **kwargs)
 
 
 
@@ -143,7 +160,8 @@ class CookListView(LoginRequiredMixin, generic.ListView):
 
 class CookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Cook
-    queryset = Cook.objects.all().prefetch_related("dishes__dish_type")
+    queryset = Cook.objects.all()
+    # queryset = Cook.objects.prefetch_related("dishes__dish_type")
 
 
 class CookCreateView(LoginRequiredMixin, generic.CreateView):

@@ -2,21 +2,18 @@
     class="modal"
     tabindex="-1"
     role="dialog"
-    id="deleteModal{{ dishtype.id }}"
+    id="deleteModal{{ dish.id }}"
 >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header justify-content-center">
-        <h5 class="modal-title">Are you sure you want to delete {{ dishtype.name }}?</h5>
+        <h5 class="modal-title">Are you sure you want to delete {{ dish.name }}?</h5>
       </div>
 
       <div class="modal-footer justify-content-center">
           <form
               id="deleteForm"
-               {% if dishtype.id %}
-                    action="{% url 'kitchen:dishtype-delete' pk=dishtype.id %}"
-                {% endif %}
-{#              action="{% url 'kitchen:dishtype-delete' pk=dishtype.id %}"#}
+              action="{% url 'kitchen:dish-delete' pk=dish.id %}"
               method="post">
             {% csrf_token %}
 

@@ -11,6 +11,10 @@ class DishForm(forms.ModelForm):
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
     )
+    # dish_type = forms.ModelChoiceField(
+    #     queryset=DishType.objects.all(),
+    #     widget=forms.Select,  # You can use a different widget if needed
+    # )
 
     class Meta:
         model = Dish

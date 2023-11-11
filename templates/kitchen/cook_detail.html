@@ -130,10 +130,10 @@
     </div>
   </section>
 
-{% url 'kitchen:cook-delete' pk=cook.pk as deleteCookUrl %}
-{% with formAction=deleteCookUrl %}
-  {% include 'includes/confirm_delete_modal.html' with formAction=formAction %}
-{% endwith %}
+{#{% url 'kitchen:cook-delete' pk=cook.pk as deleteCookUrl %}#}
+{#{% with formAction=deleteCookUrl %}#}
+{#  {% include 'includes/confirm_delete_modal.html' with formAction=formAction %}#}
+{#{% endwith %}#}
 
   {% include 'includes/confirm_delete_modal.html' %}
 
