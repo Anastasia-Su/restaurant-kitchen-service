@@ -3,15 +3,21 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
 
-from kitchen.models import DishType, Dish, Cook
+from kitchen.models import DishType, Dish, Cook, Ingredient
 from django.contrib.auth.forms import AuthenticationForm
-
 
 
 class DishForm(forms.ModelForm):
     cooks = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
+        required=False,
+    )
+
+    ingredients = forms.ModelMultipleChoiceField(
+        queryset=Ingredient.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
     )
 
     class Meta:
@@ -39,26 +45,6 @@ class CookCreationForm(UserCreationForm):
             "first_name",
             "last_name",
         )
-
-
-# class CookRegisterForm(UserCreationForm):
-#     class Meta:
-#         model = Cook
-#         fields = ['username', 'email', 'password1', 'password2']
-#
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.fields['username'].widget.attrs['placeholder'] = 'Username'
-#         self.fields['email'].widget.attrs['placeholder'] = 'Email'
-#         self.fields['password1'].widget.attrs['placeholder'] = 'Password'
-#         self.fields['password2'].widget.attrs['placeholder'] = 'Password confirm'
-
-
-# class CookLoginForm(AuthenticationForm):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.fields['username'].widget.attrs['placeholder'] = 'Username'
-#         self.fields['password'].widget.attrs['placeholder'] = 'Password'
 
 
 class CookSearchForm(forms.Form):

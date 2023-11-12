@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
+from django.http import JsonResponse
 
 from django.contrib.auth.views import LoginView
 from django.views import View
@@ -179,26 +180,42 @@ class DishCreateView(LoginRequiredMixin, generic.CreateView):
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
+        self.object = form.save()
+
+        ingredients = self.request.POST.getlist('ingredients')
+        self.object.ingredients.set(ingredients)
+        cooks = self.request.POST.getlist('cooks')
+        self.object.cooks.set(cooks)
+
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-    def get(self, request, *args, **kwargs):
-        # Additional logic for GET requests if needed
-        return super().get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        # Additional logic for POST requests if needed
-        return super().post(request, *args, **kwargs)
-
-
+    def get_success_url(self):
+        return reverse_lazy(
+            "kitchen:dish-detail", kwargs={"pk": self.object.id}
+        )
 
 
 class DishUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Dish
     form_class = DishForm
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+
+        form.fields['ingredients'].initial = self.object.ingredients.all()
+        form.fields['cooks'].initial = self.object.cooks.all()
+
+        return form
+
+    def form_valid(self, form):
+        self.object = form.save()
+
+        ingredients = self.request.POST.getlist('ingredients')
+        self.object.ingredients.set(ingredients)
+        cooks = self.request.POST.getlist('cooks')
+        self.object.cooks.set(cooks)
+
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy("kitchen:dish-detail", kwargs={"pk": self.object.id})
@@ -240,6 +257,8 @@ class CookCreateView(generic.CreateView):
     form_class = CookCreationForm
 
 
+
+
 class CookUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Cook
     form_class = CookForm
@@ -262,3 +281,5 @@ def toggle_assign_to_dish(request, pk):
     else:
         cook.dishes.add(pk)
     return HttpResponseRedirect(reverse_lazy("kitchen:dish-detail", args=[pk]))
+
+

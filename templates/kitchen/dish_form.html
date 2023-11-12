@@ -38,7 +38,8 @@
                   <div class="card-body pt-1">
                     <div class="row">
                       {% csrf_token %}
-                      {{ form|crispy }}
+                        {{ form|crispy }}
+
 
                     </div>
                     <div class="row">
@@ -67,23 +68,17 @@
 
                 <div class="z-index-2 text-center d-flex h-100 w-100 d-flex m-auto justify-content-center">
                   <div class="mask bg-gradient-info opacity-9"></div>
-                  <div class="p-5 ps-sm-8 position-relative text-start my-auto z-index-2">
+                  <div class="p-5 ps-sm-8 position-relative text-end my-auto z-index-2">
 
                     {% if object %}
                       <div class="">
                         <h3 class="text-white">{{ dish.name }} ({{ dish.dish_type.name }})</h3>
                         <p class="text-white opacity-8 mb-4">{{ dish.description }}</p>
-                        <div class="d-flex p-2 text-white">
-                          <div>
+
+                          <div class="ps-3 text-white">
                             <i class="fas fa-dollar-sign text-sm"></i>
+                            {{ dish.price }}
                           </div>
-                          <div class="ps-3">
-                            <span
-                                class="text-sm opacity-8">
-                              {{ dish.price }}
-                            </span>
-                          </div>
-                        </div>
                       </div>
                     {% endif %}
                   </div>
@@ -97,3 +92,8 @@
     </div>
   </section>
 {% endblock %}
+
+{% block javascripts %}
+{#{% load static %}#}
+{#<script src="{% static 'css/js/load_more_ingred.js' %}"></script>#}
+{% endblock javascripts %}
