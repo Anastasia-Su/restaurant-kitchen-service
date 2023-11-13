@@ -6,6 +6,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 from django.http import JsonResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.contrib.auth.views import LoginView
 from django.views import View
@@ -156,17 +157,59 @@ class DishListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(DishListView, self).get_context_data(**kwargs)
 
-        model = self.request.GET.get("model", "")
-        context["search_form"] = DishSearchForm(initial={"model": model})
+        name = self.request.GET.get("name", "")
+        context["search_form"] = DishSearchForm(initial={"name": name})
+        context['sort_by'] = self.request.GET.get('sort_by', 'name')
         return context
 
     def get_queryset(self):
-        self.queryset = Dish.objects.all().order_by("name")
+        queryset = Dish.objects.all()
+
         # self.queryset = Dish.objects.select_related("dish_type")
         form = DishSearchForm(self.request.GET)
         if form.is_valid():
-            return self.queryset.filter(name__icontains=form.cleaned_data["name"])
-        return self.queryset
+            return queryset.filter(name__icontains=form.cleaned_data["name"])
+
+        # sort_by = self.request.GET.get('sort_by', 'name')
+        # if sort_by == 'name':
+        #     queryset = queryset.order_by('name')
+        # elif sort_by == 'price':
+        #     queryset = queryset.order_by('price')
+        # elif sort_by == 'dish_type':
+        #     queryset = queryset.order_by('dish_type__name')
+
+        return queryset
+
+    # def get_ordering(self):
+    #     sort_by = self.request.GET.get('sort_by', 'name')
+    #
+    #     if sort_by == 'name':
+    #         return ['name']
+    #     elif sort_by == 'price':
+    #         return ['price']
+    #     elif sort_by == 'dish_type':
+    #         return ['dish_type__name']
+    #     else:
+    #         return super().get_ordering()
+    #
+    # def get(self, request, *args, **kwargs):
+    #     self.ordering = self.get_ordering()
+    #     return super().get(request, *args, **kwargs)
+
+
+    # def get(self, request, *args, **kwargs):
+    #     queryset = self.get_queryset()
+    #     sort_by = request.GET.get('sort_by', 'name')  # Default sorting by name
+    #
+    #     if sort_by == 'name':
+    #         queryset = queryset.order_by('name')
+    #     elif sort_by == 'price':
+    #         queryset = queryset.order_by('price')
+    #     elif sort_by == 'dish_type':
+    #         queryset = queryset.order_by('dish_type__name')
+    #
+    #     context = {'dish_list': queryset, 'sort_by': sort_by}
+    #     return render(request, "kitchen/dish_list.html", context)
 
 
 class DishDetailView(LoginRequiredMixin, generic.DetailView):

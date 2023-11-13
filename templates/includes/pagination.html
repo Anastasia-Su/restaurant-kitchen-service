@@ -61,7 +61,7 @@
                 {% if page_number == page_obj.number %}
                 text-white
                 {% endif %}"
-                href="?page={{ page_number }}">
+                href="?{% query_transform request page=page_number %}">
                 {{ page_number }}
               </a>
           </li>

@@ -114,12 +114,18 @@
 
                   <li class="list-group-item d-flex justify-content-between align-items-center">
 
-                    <h5>{{ dishtype.name }}</h5>
+                    <h5>
+                      <a
+                        href="#"
+                        class="text-info toggle-link"
+                        data-target="dishtypes-content-{{ dishtype.id }}"
+                      >
+                        {{ dishtype.name }}
+                      </a>
+                    </h5>
+
                     <div class="d-flex justify-content-between align-items-center mb-2">
-
                       <div class="d-block">
-
-
                         <a href="{% url 'kitchen:dishtype-update' pk=dishtype.id %}">
                           <button
                               type="button"
@@ -146,22 +152,31 @@
                     </div>
 
                   </li>
+
+                  <div
+                      id="dishtypes-content-{{ dishtype.id }}"
+                      class="dishtypes-content"
+                      style="display: none;"
+                  >
+                    <ol>
+                      {% for dish in dishtype.dishes.all %}
+                        <li><a
+                              href="{% url "kitchen:dish-detail" pk=dish.id %}"
+                              class="text-black icon-move-right ps-3 fw-bolder"
+                              style="margin-top: 5px; display: inline-block;">
+                              {{ dish.name }}
+                        </a></li>
+                      {% endfor %}
+                    </ol>
+                  </div>
                 {% endfor %}
-
               </ul>
-
-
             </div>
           </div>
       </div>
     </div>
   </section>
 
-{##}
-{#{% url 'kitchen:dishtype-delete' pk=dishtype.pk as deleteTypeUrl %}#}
-{#{% with formAction=deleteTypeUrl %}#}
-{#  {% include 'includes/confirm_delete_modal_dishtype.html' with formAction=formAction %}#}
-{#{% endwith %}#}
 
 {% include 'includes/confirm_delete_modal_dishtype.html' %}
 
@@ -172,6 +187,35 @@
 {% endblock %}
 
 {% block javascripts %}
+  <script>
+    function toggleContent(targetId) {
+        const targetElement = document.getElementById(targetId);
+
+        const allElems = document.querySelectorAll('.dishtypes-content');
+        allElems.forEach(elem => {
+            if (elem.id !== targetId) {
+                elem.style.display = 'none';
+            }
+        });
+
+        if (targetElement.style.display === 'none' || targetElement.style.display === '') {
+            targetElement.style.display = 'block';
+        } else {
+            targetElement.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleLinks = document.querySelectorAll('.toggle-link');
+        toggleLinks.forEach(toggleLink => {
+            toggleLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                const targetId = toggleLink.getAttribute('data-target');
+                toggleContent(targetId);
+            });
+        });
+    });
+  </script>
 
   <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -189,7 +233,6 @@
             backdrop.classList.add('modal-backdrop', 'fade', 'show');
             document.body.appendChild(backdrop);
 
-
             modal.addEventListener('click', function (event) {
               if (event.target === modal || event.target.classList.contains('close')) {
                 modal.style.display = 'none';
@@ -201,8 +244,6 @@
             });
         });
     });
-
-
   });
 </script>
 

@@ -129,8 +129,27 @@
         </div>
       </div>
 
-      <div class="row d-flex justify-content-center align-items-center">
 
+{#      <div class="dropdown">#}
+{#          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#            Sort by#}
+{#          </button>#}
+{#          <div id="dropdown-menu" style="display: none" aria-labelledby="dropdownMenuButton">#}
+{#            <table class="table table-hover w-10 bg-light rounded">#}
+{#              <tr>#}
+{#                <td><a class="dropdown-item fw-bolder" href="?sort_by=name">Name</a></td>#}
+{#              </tr>#}
+{#              <tr>#}
+{#                <td><a class="dropdown-item fw-bolder" href="?sort_by=price">Price</a></td>#}
+{#              </tr>#}
+{#              <tr>#}
+{#                <td><a class="dropdown-item fw-bolder" href="?sort_by=dish_type">Type</a></td>#}
+{#              </tr>#}
+{#            </table>#}
+{#          </div>#}
+{#      </div>#}
+
+      <div class="row d-flex justify-content-center align-items-center">
           <div class="col-lg-10 col-12">
             <div class="card card-profile overflow-hidden">
 
@@ -140,7 +159,6 @@
                   {% include 'includes/confirm_delete_modal_dish.html' %}
 
                   <li class="list-group-item d-flex justify-content-between align-items-center">
-
                     <h5>
                       <a
                           href="{% url 'kitchen:dish-detail' pk=dish.id %}"
@@ -152,6 +170,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-2">
 
                       <div class="d-block">
+                        <div class="d-inline-block me-10 fw-bolder">{{ dish.price }}</div>
                         <a href="{% url 'kitchen:dish-update' pk=dish.id %}">
                           <button
                               type="button"
@@ -176,13 +195,9 @@
                         </a>
                       </div>
                     </div>
-
                   </li>
                 {% endfor %}
-
               </ul>
-
-
             </div>
           </div>
       </div>
@@ -233,10 +248,54 @@
             });
         });
     });
-
-
   });
 </script>
 
+
+  {#DROPDOWN#}
+{##}
+  <script>
+    function toggleDropdown() {
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        dropdownMenu.style.display = (dropdownMenu.style.display === 'block') ? 'none' : 'block';
+    }
+
+    const dropdown_btn = document.querySelector('.dropdown-toggle');
+
+    dropdown_btn.addEventListener('click', function (e) {
+        toggleDropdown();
+
+    });
+
+    {#const items = document.querySelectorAll(".dropdown-item");#}
+    {#items.forEach(item => {#}
+    {#    item.addEventListener('click', function (e) {#}
+    {#        e.preventDefault();#}
+    {##}
+    {#        dropdown_btn.textContent = item.textContent;#}
+    {##}
+    {#        toggleDropdown();#}
+    {#    });#}
+
+
+    document.addEventListener('click', function (event) {
+        const dropdown = document.querySelector('.dropdown');
+        if (!dropdown.contains(event.target)) {
+            const dropdownMenu = document.getElementById('dropdown-menu');
+            dropdownMenu.style.display = 'none';
+        }
+    });
+</script>
+
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+<!-- Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-LrXAgHfj5qNSskFXT6B5nj6VmCv9fVxFUnhMp6Bnv4Dlqo9DQdP6QsA1SzTkFfN" crossorigin="anonymous"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 {% endblock %}

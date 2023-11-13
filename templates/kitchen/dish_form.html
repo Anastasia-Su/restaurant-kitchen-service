@@ -14,6 +14,7 @@
 
 {% extends 'layouts/base_sections.html' %}
 {% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
 {% load static %}
 {% block header %}
 {% endblock header %}
@@ -38,7 +39,51 @@
                   <div class="card-body pt-1">
                     <div class="row">
                       {% csrf_token %}
-                        {{ form|crispy }}
+{#                        {{ form|crispy }}#}
+
+                      {% for field in form %}
+{#                        {{ field|as_crispy_field }}#}
+
+                          {% if not forloop.last %}
+                            {{ field|as_crispy_field }}
+                              <hr />
+
+                          {% else %}
+                            <div id="ingred-menu" style="display: none;">
+                            {{ field|as_crispy_field }}
+                            </div>
+
+                          {% endif %}
+                      {% endfor %}
+                        <div class="field-lbl" style="display: block";>
+                          <a
+                              href="#"
+                              data-target="ingred-menu"
+                              class="toggle-link fw-bolder"
+                              style="font-size: 12px;"
+                          >Ingredients
+                            <i class="my-arrow fas fa-arrow-right text-sm ms-1"></i>
+
+                          </a>
+                        </div>
+
+{#                    <fieldset>#}
+{#                      <label for="{{ form.ingredients.id_for_label }}">Ingredients:</label>#}
+{#                        <select#}
+{#                            class="form-select"#}
+{#                            multiple aria-label="multiple select example"#}
+{#                            name="{{ form.ingredients.name }}"#}
+{#                        >#}
+{#                            {% for ingredient in form.ingredients.field.queryset %}#}
+{#                                <option value="{{ ingredient.pk }}"#}
+{#                                    {% if ingredient in form.ingredients.value %}#}
+{#                                       selected#}
+{#                                    {% endif %}>#}
+{#                                    {{ ingredient.name }}#}
+{#                                </option>#}
+{#                            {% endfor %}#}
+{#                        </select>#}
+{#                    </fieldset>#}
 
 
                     </div>
@@ -94,6 +139,71 @@
 {% endblock %}
 
 {% block javascripts %}
+
+{#  <script>#}
+{#  function toggleContent(targetId) {#}
+{#    const targetElement = document.getElementById(targetId);#}
+{#    const labelIngred = document.querySelector(".field-lbl");#}
+{##}
+{#    if (targetElement.classList.contains('my-hidden')) {#}
+{#      targetElement.classList.remove('my-hidden');#}
+{#      labelIngred.classList.add('my-hidden');#}
+{#    } else {#}
+{#      targetElement.classList.add('my-hidden');#}
+{#      labelIngred.classList.remove('my-hidden');#}
+{#    }#}
+{#  }#}
+{##}
+{#  document.addEventListener('DOMContentLoaded', () => {#}
+{#    const toggleLink = document.querySelector('.toggle-link');#}
+{#    const fieldLink = document.querySelector('.field-link');#}
+{#    const targetId = toggleLink.getAttribute('data-target');#}
+{##}
+{#    toggleLink.addEventListener('click', (event) => {#}
+{#      event.preventDefault();#}
+{#      toggleContent(targetId);#}
+{#    });#}
+{##}
+{#    fieldLink.addEventListener('click', (event) => {#}
+{#      event.preventDefault();#}
+{#      toggleContent(targetId);#}
+{#    });#}
+{#  });#}
+{#</script>#}
+
+  <script>
+  function toggleContent(targetId) {
+    const targetElement = document.getElementById(targetId);
+    if (
+        targetElement.style.display === 'none' || targetElement.style.display === ''
+    ) {
+      targetElement.style.display = 'block';
+    } else {
+      targetElement.style.display = 'none';
+    }
+     const labelIngred = document.querySelector(".field-lbl");
+    labelIngred.style.display = targetElement.style.display === 'block' ? 'none' : 'block';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleLink = document.querySelector('.toggle-link');
+    const fieldLink = document.querySelector('.field-link');
+    const targetId = toggleLink.getAttribute('data-target');
+
+    toggleLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      toggleContent(targetId);
+
+
+    });
+    fieldLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      toggleContent(targetId);
+    });
+
+  });
+</script>
 {#{% load static %}#}
 {#<script src="{% static 'css/js/load_more_ingred.js' %}"></script>#}
+
 {% endblock javascripts %}
