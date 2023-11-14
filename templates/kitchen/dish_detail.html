@@ -117,20 +117,11 @@
                 <h4 class="mb-0">{{ dish.name }}</h4>
                 <div class="d-block">
                   <a href="{% url 'kitchen:dish-update' pk=dish.id %}">
-                    <button
-                        type="button"
-                        class="btn btn-sm btn-outline-warning text-nowrap mb-0 mt-3"
-                        style="margin-right: 30px;">
-                      Update
-                    </button>
+                    {% include "includes/update_btn.html" %}
                   </a>
-                  <a href="#">
-                    <button
-                        type="button"
-                        class="btn btn-sm btn-outline-danger text-nowrap mb-0 mt-3"
-                        id="openModalBtn">
-                      Delete
-                    </button>
+
+                  <a href="#" class="openModalBtn">
+                    {% include "includes/delete_btn.html" %}
                   </a>
 
                 </div>
@@ -235,7 +226,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var modal = document.querySelector('.modal');
-    var openModalBtn = document.getElementById('openModalBtn');
+    var openModalBtn = document.querySelector('.openModalBtn');
 
     openModalBtn.addEventListener('click', function () {
       modal.style.display = 'block';

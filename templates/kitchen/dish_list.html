@@ -150,7 +150,7 @@
 {#      </div>#}
 
       <div class="row d-flex justify-content-center align-items-center">
-          <div class="col-lg-10 col-12">
+          <div class="col-lg-6 col-12">
             <div class="card card-profile overflow-hidden">
 
               <ul class="list-group">
@@ -158,43 +158,20 @@
                 {% for dish in dish_list %}
                   {% include 'includes/confirm_delete_modal_dish.html' %}
 
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <li class="list-group-item d-flex justify-content-between align-items-start">
                     <h5>
                       <a
                           href="{% url 'kitchen:dish-detail' pk=dish.id %}"
                           class="text-info">
                         {{ dish.name }}
-                      </a>
+                      </a><br />
                       ({{ dish.dish_type.name }})
                     </h5>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-
-                      <div class="d-block">
-                        <div class="d-inline-block me-10 fw-bolder">{{ dish.price }}</div>
-                        <a href="{% url 'kitchen:dish-update' pk=dish.id %}">
-                          <button
-                              type="button"
-                              class="btn btn-sm btn-outline-warning text-nowrap mb-0"
-                              style="margin-right: 30px;">
-                            Update
-                          </button>
-                        </a>
-                        <a
-                            href="#"
-                            data-toggle="modal"
-                            class="openModalBtn"
-                            data-dish-id="{{ dish.id }}"
-                            data-target="#deleteModal{{ dish.id }}"
-                        >
-                          <button
-                              type="button"
-                              class="btn btn-sm btn-outline-danger text-nowrap mb-0"
-                              >
-                            Delete
-                          </button>
-                        </a>
-                      </div>
+                    <div class="d-inline-block fw-bolder">
+                      {{ dish.price }}
                     </div>
+
+
                   </li>
                 {% endfor %}
               </ul>
@@ -203,15 +180,6 @@
       </div>
     </div>
   </section>
-
-{##}
-{#{% url 'kitchen:dish-delete' pk=dish.pk as deleteTypeUrl %}#}
-{#{% with formAction=deleteTypeUrl %}#}
-{#  {% include 'includes/confirm_delete_modal_dish.html' with formAction=formAction %}#}
-{#{% endwith %}#}
-
-{#{% include 'includes/confirm_delete_modal_dish.html' %}#}
-
 {% endblock content %}
 
 {% block pagination %}
@@ -219,37 +187,6 @@
 {% endblock %}
 
 {% block javascripts %}
-
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const openModalBtns = document.querySelectorAll('.openModalBtn');
-
-    openModalBtns.forEach(openModalBtn => {
-        openModalBtn.addEventListener('click', function () {
-            const dishId = this.getAttribute('data-dish-id');
-            const modal = document.getElementById(`deleteModal${dishId}`);
-
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-
-            const backdrop = document.createElement('div');
-            backdrop.classList.add('modal-backdrop', 'fade', 'show');
-            document.body.appendChild(backdrop);
-
-
-            modal.addEventListener('click', function (event) {
-              if (event.target === modal || event.target.classList.contains('close')) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-
-                const backdrop = document.querySelector('.modal-backdrop');
-                document.body.removeChild(backdrop);
-              }
-            });
-        });
-    });
-  });
-</script>
 
 
   {#DROPDOWN#}

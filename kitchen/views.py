@@ -1,3 +1,6 @@
+from urllib import request
+from urllib.parse import urlencode, urlunsplit, urlsplit
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -7,6 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import QueryDict
+from django.core.paginator import Paginator
 
 from django.contrib.auth.views import LoginView
 from django.views import View
@@ -114,6 +119,8 @@ class DishTypeListView(LoginRequiredMixin, generic.ListView):
     template_name = "kitchen/dishtype_list.html"
     paginate_by = 5
 
+
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(DishTypeListView, self).get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
@@ -140,10 +147,30 @@ class DishTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     fields = "__all__"
     success_url = reverse_lazy("kitchen:dishtype-list")
 
+    def get_success_url(self):
+        page_number = self.request.GET.get('page')
+
+        if page_number:
+            query_params = QueryDict(mutable=True)
+            query_params['page'] = page_number
+
+            success_url = reverse_lazy("kitchen:dishtype-list") + '?' + query_params.urlencode()
+        else:
+            success_url = self.success_url
+
+        return success_url
+
+
+
 
 class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = DishType
-    success_url = reverse_lazy("kitchen:dishtype-list")
+
+    def get_success_url(self):
+        referer = self.request.META.get('HTTP_REFERER')
+        if referer:
+            return referer
+        return self.success_url
 
 
 class DishListView(LoginRequiredMixin, generic.ListView):
@@ -263,6 +290,7 @@ class DishUpdateView(LoginRequiredMixin, generic.UpdateView):
 class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Dish
     success_url = reverse_lazy("kitchen:dish-list")
+
 
 
 class CookListView(LoginRequiredMixin, generic.ListView):

@@ -60,26 +60,16 @@
                   alt="bruce">
             </div>
             <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mt-sm-0 mt-4">
-              <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="d-flex justify-content-between align-items-center mb-2 me-1">
                 <h4 class="mb-0">{{ cook.first_name }} {{ cook.last_name }}</h4>
-                <div class="d-block">
+                <div class="d-flex justify-content-between">
                   <a href="{% url 'kitchen:cook-update' pk=cook.id %}">
-                    <button
-                        type="button"
-                        class="btn btn-sm btn-outline-warning text-nowrap mb-0"
-                        style="margin-right: 30px;">
-                      Update
-                    </button>
+                    {% include "includes/update_btn.html" %}
                   </a>
-                  <a href="#">
-                    <button
-                        type="button"
-                        class="btn btn-sm btn-outline-danger text-nowrap mb-0"
-                        id="openModalBtn">
-                      Delete
-                    </button>
-                  </a>
+                  <a href="#" class="openModalBtn">
+                    {% include "includes/delete_btn.html" %}
 
+                  </a>
                 </div>
               </div>
               <div class="row mb-4">
@@ -177,7 +167,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var modal = document.querySelector('.modal');
-    var openModalBtn = document.getElementById('openModalBtn');
+    var openModalBtn = document.querySelector('.openModalBtn');
 
     openModalBtn.addEventListener('click', function () {
       modal.style.display = 'block';
