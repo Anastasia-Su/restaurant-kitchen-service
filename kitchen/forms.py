@@ -66,9 +66,6 @@ class DishForm(forms.ModelForm):
         fields = "__all__"
 
 
-
-
-
 class CookForm(forms.ModelForm):
     class Meta:
         model = Cook
@@ -82,6 +79,7 @@ class CookCreationForm(UserCreationForm):
         # Remove password hints
         for field_name in ['password1', 'password2', 'username']:
             self.fields[field_name].help_text = ''
+
     class Meta(UserCreationForm.Meta):
         model = Cook
         fields = UserCreationForm.Meta.fields + (

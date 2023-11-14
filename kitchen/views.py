@@ -86,12 +86,8 @@ class RememberMeLoginView(View):
 
                 if remember_me:
                     self.request.session.set_expiry(1209600)
-                    # request.session['remember_me_username'] = username
-                    # request.session['remember_me_password'] = password
                 else:
                     self.request.session.set_expiry(0)
-                    # request.session.pop('remember_me_username', None)
-                    # request.session.pop('remember_me_password', None)
 
                 return redirect('/')
 
