@@ -23,12 +23,12 @@ class DishForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['ingredients'].label = format_html(
+        self.fields["ingredients"].label = format_html(
             '<a href="#" class="field-link" '
             'data-target="ingred-menu">'
-            'Ingredients'
+            "Ingredients"
             '<i class="my-arrow fas fa-arrow-right text-sm ms-1"></i>'
-            '</a>'
+            "</a>"
         )
 
     class Meta:
@@ -47,8 +47,8 @@ class CookCreationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
 
         # Remove password hints
-        for field_name in ['password1', 'password2', 'username']:
-            self.fields[field_name].help_text = ''
+        for field_name in ["password1", "password2", "username"]:
+            self.fields[field_name].help_text = ""
 
     class Meta(UserCreationForm.Meta):
         model = Cook

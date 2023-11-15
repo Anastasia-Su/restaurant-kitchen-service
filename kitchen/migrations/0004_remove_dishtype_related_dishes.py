@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('kitchen', '0003_alter_dishtype_options_dishtype_related_dishes_and_more'),
+        ("kitchen", "0003_alter_dishtype_options_dishtype_related_dishes_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='dishtype',
-            name='related_dishes',
+            model_name="dishtype",
+            name="related_dishes",
         ),
     ]

@@ -1,25 +1,14 @@
-from urllib import request
-from urllib.parse import urlencode, urlunsplit, urlsplit
-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.conf import settings
-from django.http import JsonResponse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import QueryDict
-from django.core.paginator import Paginator
-
-from django.contrib.auth.views import LoginView
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.edit import CreateView
-from django.contrib.auth.forms import UserCreationForm
 
 
 from .forms import (
@@ -56,18 +45,18 @@ def index(request):
 
 class SignUpView(CreateView):
     form_class = CookCreationForm
-    template_name = 'registration/signup.html'
-    success_url = reverse_lazy('login')
+    template_name = "registration/signup.html"
+    success_url = reverse_lazy("login")
 
 
 class RememberMeLoginView(View):
-    template_name = 'registration/login.html'
+    template_name = "registration/login.html"
 
     def get(self, request, *args, **kwargs):
-        username = request.session.pop('remember_me_username', '')
-        password = request.session.pop('remember_me_password', '')
-        form = AuthenticationForm(initial={'username': username, 'password': password})
-        return render(request, self.template_name, {'form': form})
+        username = request.session.pop("remember_me_username", "")
+        password = request.session.pop("remember_me_password", "")
+        form = AuthenticationForm(initial={"username": username, "password": password})
+        return render(request, self.template_name, {"form": form})
         #
         # form.fields['username'].widget.attrs['placeholder'] = 'Username'
         # form.fields['password'].widget.attrs['placeholder'] = 'Password'
@@ -76,9 +65,9 @@ class RememberMeLoginView(View):
         form = AuthenticationForm(request, data=request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            remember_me = request.POST.get('remember_me')
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+            remember_me = request.POST.get("remember_me")
 
             user = authenticate(request, username=username, password=password)
             if user is not None:
@@ -88,9 +77,9 @@ class RememberMeLoginView(View):
                 else:
                     self.request.session.set_expiry(0)
 
-                return redirect('/')
+                return redirect("/")
 
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {"form": form})
 
 
 class DishTypeListView(LoginRequiredMixin, generic.ListView):
@@ -126,13 +115,15 @@ class DishTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("kitchen:dishtype-list")
 
     def get_success_url(self):
-        page_number = self.request.GET.get('page')
+        page_number = self.request.GET.get("page")
 
         if page_number:
             query_params = QueryDict(mutable=True)
-            query_params['page'] = page_number
+            query_params["page"] = page_number
 
-            success_url = reverse_lazy("kitchen:dishtype-list") + '?' + query_params.urlencode()
+            success_url = (
+                reverse_lazy("kitchen:dishtype-list") + "?" + query_params.urlencode()
+            )
         else:
             success_url = self.success_url
 
@@ -143,7 +134,7 @@ class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = DishType
 
     def get_success_url(self):
-        referer = self.request.META.get('HTTP_REFERER')
+        referer = self.request.META.get("HTTP_REFERER")
         if referer:
             return referer
         return self.success_url
@@ -158,7 +149,7 @@ class DishListView(LoginRequiredMixin, generic.ListView):
 
         name = self.request.GET.get("name", "")
         context["search_form"] = DishSearchForm(initial={"name": name})
-        context['sort_by'] = self.request.GET.get('sort_by', 'name')
+        context["sort_by"] = self.request.GET.get("sort_by", "name")
         return context
 
     def get_queryset(self):
@@ -195,7 +186,6 @@ class DishListView(LoginRequiredMixin, generic.ListView):
     #     self.ordering = self.get_ordering()
     #     return super().get(request, *args, **kwargs)
 
-
     # def get(self, request, *args, **kwargs):
     #     queryset = self.get_queryset()
     #     sort_by = request.GET.get('sort_by', 'name')  # Default sorting by name
@@ -224,17 +214,15 @@ class DishCreateView(LoginRequiredMixin, generic.CreateView):
         form.instance.created_by = self.request.user
         self.object = form.save()
 
-        ingredients = self.request.POST.getlist('ingredients')
+        ingredients = self.request.POST.getlist("ingredients")
         self.object.ingredients.set(ingredients)
-        cooks = self.request.POST.getlist('cooks')
+        cooks = self.request.POST.getlist("cooks")
         self.object.cooks.set(cooks)
 
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy(
-            "kitchen:dish-detail", kwargs={"pk": self.object.id}
-        )
+        return reverse_lazy("kitchen:dish-detail", kwargs={"pk": self.object.id})
 
 
 class DishUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -244,17 +232,17 @@ class DishUpdateView(LoginRequiredMixin, generic.UpdateView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
 
-        form.fields['ingredients'].initial = self.object.ingredients.all()
-        form.fields['cooks'].initial = self.object.cooks.all()
+        form.fields["ingredients"].initial = self.object.ingredients.all()
+        form.fields["cooks"].initial = self.object.cooks.all()
 
         return form
 
     def form_valid(self, form):
         self.object = form.save()
 
-        ingredients = self.request.POST.getlist('ingredients')
+        ingredients = self.request.POST.getlist("ingredients")
         self.object.ingredients.set(ingredients)
-        cooks = self.request.POST.getlist('cooks')
+        cooks = self.request.POST.getlist("cooks")
         self.object.cooks.set(cooks)
 
         return super().form_valid(form)

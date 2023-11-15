@@ -24,9 +24,7 @@ class AdminTests(TestCase):
         self.assertContains(res, str(formatted_date))
 
     def test_cook_detail_hire_date_listed(self) -> None:
-        url = reverse(
-            "admin:kitchen_cook_change", args=[self.cook.id]
-        )
+        url = reverse("admin:kitchen_cook_change", args=[self.cook.id])
         res = self.client.get(url)
         self.assertContains(res, self.cook.hire_date)
 

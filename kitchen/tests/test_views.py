@@ -31,10 +31,7 @@ class PrivateTypeTest(TestCase):
         self.assertEqual(res.status_code, 200)
 
         dishtypes = DishType.objects.all()
-        self.assertEqual(
-            list(res.context["dishtype_list"]),
-            list(dishtypes)
-        )
+        self.assertEqual(list(res.context["dishtype_list"]), list(dishtypes))
 
         self.assertTemplateUsed(res, "kitchen/dishtype_list.html")
 
@@ -70,10 +67,7 @@ class PrivateDishTest(TestCase):
         self.assertEqual(res.status_code, 200)
 
         dishes = Dish.objects.all()
-        self.assertEqual(
-            list(res.context["dish_list"]),
-            list(dishes)
-        )
+        self.assertEqual(list(res.context["dish_list"]), list(dishes))
 
         self.assertTemplateUsed(res, "kitchen/dish_list.html")
 
@@ -99,9 +93,6 @@ class PrivateCookTest(TestCase):
         self.assertEqual(res.status_code, 200)
 
         cooks = get_user_model().objects.all()
-        self.assertEqual(
-            list(res.context["cook_list"]),
-            list(cooks)
-        )
+        self.assertEqual(list(res.context["cook_list"]), list(cooks))
 
         self.assertTemplateUsed(res, "kitchen/cook_list.html")

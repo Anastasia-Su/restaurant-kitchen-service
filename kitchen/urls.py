@@ -23,8 +23,8 @@ from .views import (
 
 urlpatterns = [
     path("", index, name="index"),
-    path('accounts/login/', RememberMeLoginView.as_view(), name='login'),
-    path('signup/', SignUpView.as_view(), name='signup'),
+    path("accounts/login/", RememberMeLoginView.as_view(), name="login"),
+    path("signup/", SignUpView.as_view(), name="signup"),
     path(
         "dishtypes/",
         DishTypeListView.as_view(),

@@ -2,15 +2,11 @@ import datetime
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from kitchen.forms import (
-    CookCreationForm
-)
+from kitchen.forms import CookCreationForm
 
 
 class FormTests(TestCase):
-    def test_cook_creation_form_with_all_fields_is_valid(
-            self
-    ) -> None:
+    def test_cook_creation_form_with_all_fields_is_valid(self) -> None:
         form_data = {
             "username": "username",
             "password1": "123password321",

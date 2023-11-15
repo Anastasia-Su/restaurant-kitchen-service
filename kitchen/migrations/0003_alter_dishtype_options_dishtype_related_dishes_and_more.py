@@ -5,24 +5,27 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('kitchen', '0002_remove_cook_years_of_experience_cook_hire_date'),
+        ("kitchen", "0002_remove_cook_years_of_experience_cook_hire_date"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='dishtype',
+            name="dishtype",
             options={},
         ),
         migrations.AddField(
-            model_name='dishtype',
-            name='related_dishes',
-            field=models.ManyToManyField(related_name='dishtypes', to='kitchen.dish'),
+            model_name="dishtype",
+            name="related_dishes",
+            field=models.ManyToManyField(related_name="dishtypes", to="kitchen.dish"),
         ),
         migrations.AlterField(
-            model_name='dish',
-            name='dish_type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='dishes', to='kitchen.dishtype'),
+            model_name="dish",
+            name="dish_type",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="dishes",
+                to="kitchen.dishtype",
+            ),
         ),
     ]
