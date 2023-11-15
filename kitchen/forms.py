@@ -8,36 +8,6 @@ from kitchen.models import DishType, Dish, Cook, Ingredient
 from django.contrib.auth.forms import AuthenticationForm
 
 
-#
-# class CheckboxSelectIngredients(forms.CheckboxSelectMultiple):
-#     template_name = 'kitchen/checkbox_select.html'
-#
-#     def get_context(self, name, value, attrs):
-#         context = super().get_context(name, value, attrs)
-#
-#         options = []
-#
-#         for group in self.choices:
-#             group_options = []
-#             for option in group[1]:
-#                 option_data = {
-#                     'value': option[0],
-#                     'label': option[1],
-#                     'selected': self.is_option_selected(option[0], value),
-#                     'index': len(options),  # You might need this for unique IDs
-#                 }
-#                 group_options.append(option_data)
-#
-#             options.append({
-#                 'name': group[0],
-#                 'options': group_options,
-#             })
-#
-#         context['widget']['optgroups'] = options
-#
-#         return context
-
-
 class DishForm(forms.ModelForm):
     cooks = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),

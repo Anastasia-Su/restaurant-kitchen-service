@@ -68,7 +68,6 @@ urlpatterns = [
         CookDeleteView.as_view(),
         name="cook-delete",
     ),
-
 ]
 
 app_name = "kitchen"

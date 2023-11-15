@@ -60,10 +60,6 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('login')
 
 
-class LoginView:
-    pass
-
-
 class RememberMeLoginView(View):
     template_name = 'registration/login.html'
 
@@ -72,9 +68,9 @@ class RememberMeLoginView(View):
         password = request.session.pop('remember_me_password', '')
         form = AuthenticationForm(initial={'username': username, 'password': password})
         return render(request, self.template_name, {'form': form})
-
-        form.fields['username'].widget.attrs['placeholder'] = 'Username'
-        form.fields['password'].widget.attrs['placeholder'] = 'Password'
+        #
+        # form.fields['username'].widget.attrs['placeholder'] = 'Username'
+        # form.fields['password'].widget.attrs['placeholder'] = 'Password'
 
     def post(self, request, *args, **kwargs):
         form = AuthenticationForm(request, data=request.POST)
@@ -85,10 +81,8 @@ class RememberMeLoginView(View):
             remember_me = request.POST.get('remember_me')
 
             user = authenticate(request, username=username, password=password)
-
             if user is not None:
                 login(request, user)
-
                 if remember_me:
                     self.request.session.set_expiry(1209600)
                 else:
@@ -98,28 +92,12 @@ class RememberMeLoginView(View):
 
         return render(request, self.template_name, {'form': form})
 
-#
-# class RememberMeLoginView(View):
-#     template_name = 'registration/login.html'
-#     success_url = reverse_lazy('/')  # Change 'home' to your actual home URL
-#
-#     def form_valid(self, form):
-#         remember_me = form.cleaned_data['remember_me']
-#
-#         if not remember_me:
-#             self.request.session.set_expiry(0)
-#
-#         login(self.request, form.get_user())
-#         return HttpResponseRedirect(self.get_success_url())
-
 
 class DishTypeListView(LoginRequiredMixin, generic.ListView):
     model = DishType
     context_object_name = "dishtype_list"
     template_name = "kitchen/dishtype_list.html"
     paginate_by = 5
-
-
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(DishTypeListView, self).get_context_data(**kwargs)
@@ -159,8 +137,6 @@ class DishTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
             success_url = self.success_url
 
         return success_url
-
-
 
 
 class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -292,7 +268,6 @@ class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("kitchen:dish-list")
 
 
-
 class CookListView(LoginRequiredMixin, generic.ListView):
     model = Cook
     paginate_by = 6
@@ -324,15 +299,12 @@ class CookCreateView(generic.CreateView):
     form_class = CookCreationForm
 
 
-
-
 class CookUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Cook
     form_class = CookForm
 
     def get_success_url(self):
         return reverse_lazy("kitchen:cook-detail", kwargs={"pk": self.object.id})
-
 
 
 class CookDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -348,5 +320,3 @@ def toggle_assign_to_dish(request, pk):
     else:
         cook.dishes.add(pk)
     return HttpResponseRedirect(reverse_lazy("kitchen:dish-detail", args=[pk]))
-
-

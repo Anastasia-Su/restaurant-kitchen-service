@@ -1,26 +1,9 @@
-{#{% extends "base.html" %}#}
-{#{% load crispy_forms_filters %}#}
-{##}
-{#{% block content %}#}
-{#  <h1>{{ object|yesno:"Update,Create" }} dish type</h1>#}
-{#  <form action="" method="post" novalidate>#}
-{#    {% csrf_token %}#}
-{#    {{ form|crispy }}#}
-{##}
-{#    <input type="submit" value="Submit" class="btn btn-primary">#}
-{#  </form>#}
-{#{% endblock %}#}
-
-
-
 {% extends 'layouts/base_sections.html' %}
 {% load crispy_forms_filters %}
 {% load static %}
 {% block header %}
 {% endblock header %}
 {% block content %}
-
-
   <section class="py-lg-7">
     <div class="container">
       <div class="row">
@@ -40,7 +23,6 @@
                     <div class="row">
                       {% csrf_token %}
                       {{ form|crispy }}
-
                     </div>
                     <div class="row">
                       <div class="col-md-6 text-end ms-auto">
@@ -54,8 +36,6 @@
                   </div>
                 </form>
               </div>
-
-
               <div
                   class="col-lg-5 position-relative bg-cover px-0"
                   style="background-image: url('{% static 'css/img/curved-images/curved5.jpg' %}')">
@@ -65,27 +45,21 @@
                       class="h-100 ms-n2"
                       alt="vertical-wave">
                 </div>
-
                 <div class="z-index-2 text-center d-flex h-100 w-100 d-flex m-auto justify-content-center">
                   <div class="mask bg-gradient-warning opacity-9"></div>
                   <div class="p-5 ps-sm-8 position-relative text-start my-auto z-index-2">
-
                     {% if object %}
                       <div class="">
                         <h3 class="text-white mb-4">{{ dishtype.name }}</h3>
-
-
                         {% for dish in dishtype.dishes.all %}
                               <p class="text-white opacity-8 mb-2">{{ dish.name }},
                                 <i class="fas fa-dollar-sign text-sm"></i>{{ dish.price }}
                               </p>
                             {% endfor %}
-
                       </div>
                     {% endif %}
                   </div>
                 </div>
-
               </div>
             </div>
           </div>

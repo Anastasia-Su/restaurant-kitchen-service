@@ -1,27 +1,6 @@
-{#{% extends "base.html" %}#}
-{##}
-{#{% block content %}#}
-{#    <h1>Kitchen Service Home</h1>#}
-{#    <p>Welcome to Best Kitchen Ever!</p>#}
-{#    <h2>Dynamic content</h2>#}
-{#    <p>The Kitchen service has the following record counts:</p>#}
-{#    <ul>#}
-{#        <li><strong>Dishes:</strong> {{ num_dishes }}</li>#}
-{#        <li><strong>Cooks:</strong> {{ num_cooks }}</li>#}
-{#        <li><strong>Dish Types:</strong> {{ num_dish_types }}</li>#}
-{#    </ul>#}
-{##}
-{#    <p>You have visited this page#}
-{#        {{ num_visits }} time{{ num_visits|pluralize }}.#}
-{#    </p>#}
-{#{% endblock %}#}
-
-
 {% extends 'layouts/base_sections.html' %}
 {% load static %}
-
 {% block title %} Kitchen Service {% endblock title %}
-
 {% block body %} class="index-page bg-gray-200" {% endblock body %}
 {% block header %}{% endblock header %}
 {% block content %}
@@ -29,20 +8,11 @@
 <header class="header-2">
   <div
       class="page-header min-vh-75 relative img-fluid img-sm"
-{#      <img#}
-{#        src="{% static 'css/img/curved-images/food_trimmed.png' %}"#}
-{#        alt="Background Image"#}
-{#        class="img-fluid img-sm"#}
-{#        style="object-fit: cover; width: 100%; height: 75vh;"#}
-{#      >#}
       style="
       background-image: url({% static 'css/img/curved-images/fire.jpg' %});
       background-size: cover;
       background-repeat: no-repeat;
-      "
-  >
-
-
+      ">
     <div class="container">
       <div class="row">
         <div class="col-lg-7 text-center mx-auto">
@@ -59,7 +29,6 @@
         </div>
       </div>
     </div>
-
     <div class="position-absolute w-100 z-index-1 bottom-0">
       <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 40" preserveAspectRatio="none" shape-rendering="auto">
         <defs>
@@ -75,11 +44,8 @@
         </g>
       </svg>
     </div>
-
-
   </div>
 </header>
-
 
 <section class="pt-3 pb-4" id="count-stats" style="background-color: white">
   <div class="container">

@@ -56,4 +56,3 @@ class Ingredient(models.Model):
 
     class Meta:
         ordering = ["name"]
-

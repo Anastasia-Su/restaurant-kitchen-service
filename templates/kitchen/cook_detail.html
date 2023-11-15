@@ -1,40 +1,3 @@
-{#{% extends "base.html" %}#}
-{##}
-{#{% block content %}#}
-{#  <h1>#}
-{#    Username: {{ cook.username }}#}
-{#    <a href="{% url 'kitchen:cook-delete' pk=cook.id %}" class="btn btn-danger link-to-page">#}
-{#      Delete#}
-{#    </a>#}
-{##}
-{#    <a href="{% url 'kitchen:cook-update' pk=cook.id %}" class="btn btn-secondary link-to-page">#}
-{#      Update#}
-{#    </a>#}
-{#  </h1>#}
-{##}
-{#  <p><strong>First name:</strong> {{ cook.first_name }}</p>#}
-{#  <p><strong>Last name:</strong> {{ cook.last_name }}</p>#}
-{#  <p><strong>Years of experience:</strong> {{ cook.get_years_of_experience }}</p>#}
-{#  <p><strong>Is staff:</strong> {{ cook.is_staff }}</p>#}
-{##}
-{#  <div class="ml-3">#}
-{#    <h4>Dishes</h4>#}
-{##}
-{#    {% for dish in cook.dishes.all %}#}
-{#        <hr>#}
-{#        <p><strong>Name:</strong> {{ dish.name }}</p>#}
-{#        <p><strong>Dish Type:</strong> {{ dish.dish_type.name }}</p>#}
-{#        <p class="text-muted"><strong>Id:</strong> {{dish.id}}</p>#}
-{##}
-{#    {% empty %}#}
-{#      <p>No dishes!</p>#}
-{#    {% endfor %}#}
-{#  </div>#}
-{#{% endblock %}#}
-
-
-
-
 {% extends 'layouts/base_sections.html' %}
 {% load static %}
 
@@ -120,12 +83,7 @@
     </div>
   </section>
 
-{#{% url 'kitchen:cook-delete' pk=cook.pk as deleteCookUrl %}#}
-{#{% with formAction=deleteCookUrl %}#}
-{#  {% include 'includes/confirm_delete_modal.html' with formAction=formAction %}#}
-{#{% endwith %}#}
-
-  {% include 'includes/confirm_delete_modal.html' %}
+  {% include 'includes/confirm_delete_modal_cook.html' %}
 
 {% endblock content %}
 
@@ -134,62 +92,6 @@
 
 
 {% block javascripts %}
-  <script>
-  function toggleContent(targetId) {
-    const targetElement = document.getElementById(targetId);
-    if (
-        targetElement.style.display === 'none' || targetElement.style.display === ''
-    ) {
-      targetElement.style.display = 'block';
-      localStorage.setItem(targetId, 'block');
-    } else {
-      targetElement.style.display = 'none';
-      localStorage.setItem(targetId, 'none');
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const toggleLink = document.querySelector('.toggle-link');
-    const targetId = toggleLink.getAttribute('data-target');
-    const storedState = localStorage.getItem(targetId);
-
-    if (storedState) {
-      document.getElementById(targetId).style.display = storedState;
-    }
-
-    toggleLink.addEventListener('click', (event) => {
-      event.preventDefault();
-      toggleContent(targetId);
-    });
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var modal = document.querySelector('.modal');
-    var openModalBtn = document.querySelector('.openModalBtn');
-
-    openModalBtn.addEventListener('click', function () {
-      modal.style.display = 'block';
-      document.body.style.overflow = 'hidden';
-
-      const backdrop = document.createElement('div');
-      backdrop.classList.add('modal-backdrop', 'fade', 'show');
-      document.body.appendChild(backdrop);
-    });
-
-    modal.addEventListener('click', function (event) {
-      if (event.target === modal || event.target.classList.contains('close')) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-
-        const backdrop = document.querySelector('.modal-backdrop');
-        document.body.removeChild(backdrop);
-      }
-    });
-  });
-</script>
-
-
-
+  <script src="/static/js/toggle_content_on_detail_page.js"></script>
+  <script src="/static/js/delete_modal_cook_dish.js"></script>
 {% endblock javascripts %}

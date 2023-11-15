@@ -1,69 +1,13 @@
-{#{% extends "base.html" %}#}
-{##}
-{#{% block content %}#}
-{#  <h1>#}
-{#    {{ dish.name }}#}
-{#    <a href="{% url 'kitchen:dish-delete' pk=dish.id %}" class="btn btn-danger link-to-page">#}
-{#      Delete#}
-{#    </a>#}
-{##}
-{#    <a href="{% url 'kitchen:dish-update' pk=dish.id %}" class="btn btn-secondary link-to-page">#}
-{#      Update#}
-{#    </a>#}
-{#  </h1>#}
-{#  <p>#}
-{#    Dish Type:#}
-{#    ({{ dish.dish_type.name }})#}
-{#  </p>#}
-{#  <h1>#}
-{#    Cooks#}
-{##}
-{#    {% if dish in user.dishes.all %}#}
-{#      <a#}
-{#          href="{% url 'kitchen:toggle-dish-assign' pk=dish.id %}"#}
-{#          class="btn btn-danger link-to-page">#}
-{#        Delete me from this dish#}
-{#      </a>#}
-{#    {% else %}#}
-{#      <a#}
-{#          href="{% url 'kitchen:toggle-dish-assign' pk=dish.id %}"#}
-{#          class="btn btn-success link-to-page">#}
-{#        Assign me to this dish#}
-{#      </a>#}
-{#    {% endif %}#}
-{#  </h1>#}
-{#  <hr>#}
-{#  <ul>#}
-{#    {% for cook in dish.cooks.all %}#}
-{#      <li>{{ cook.username }} (#}
-{#        {{ cook.first_name }} {{ cook.last_name }}#}
-{#        )#}
-{#      </li>#}
-{#    {% endfor %}#}
-{#  </ul>#}
-{#{% endblock %}#}
-
-
-
-
-
-
-
-
-
 {% extends 'layouts/base_sections.html' %}
 {% load static %}
 
 {% block title %}{% endblock title %}
-
 {% block body %} class="blog-author" {% endblock body %}
 
 {% block header %}
 {% endblock header %}
 
 {% block content %}
-
-
   <section class="py-sm-7 py-5 position-relative">
     <div class="container" id="cooks-container">
       <div class="row">
@@ -74,16 +18,11 @@
                   class="img border-radius-lg max-width-200 w-100 position-relative z-index-2"
                   src="{% static 'css/img/pixaby/cakes.jpg' %}"
                   alt="Cake om-nom-nom">
-
-
-
               <div class="text-start fs-5 fw-bolder ps-3 mt-5 mb-2">
                 Cooks
               </div>
-{#              {% if dish.cooks.all %}#}
                 <ul class="list-group list-group-flush">
                   {% for cook in dish.cooks.all %}
-
                       <li class="list-group-item">
                         <a href="{{ cook.get_absolute_url }}">
                           {% if cook.first_name and cook.last_name %}
@@ -93,24 +32,21 @@
                           {% endif %}
                         </a>
                       </li>
-
                   {% endfor %}
                 </ul>
-{#              {% endif %}#}
               {% if dish in user.dishes.all %}
                 <a
                     href="{% url 'kitchen:toggle-dish-assign' pk=dish.id %}"
                     class="btn btn-sm btn-outline-danger text-nowrap mt-3 link-to-page">
-                  Delete me from this dish
+                    Delete me from this dish
                 </a>
               {% else %}
                 <a
                     href="{% url 'kitchen:toggle-dish-assign' pk=dish.id %}"
                     class="btn btn-sm btn-outline-success text-nowrap mt-3 link-to-page">
-                  Assign me to this dish
+                    Assign me to this dish
                 </a>
               {% endif %}
-
             </div>
             <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mt-sm-0 mt-4">
               <div class="d-flex justify-content-between align-items-center mb-2">
@@ -119,11 +55,9 @@
                   <a href="{% url 'kitchen:dish-update' pk=dish.id %}">
                     {% include "includes/update_btn.html" %}
                   </a>
-
                   <a href="#" class="openModalBtn">
                     {% include "includes/delete_btn.html" %}
                   </a>
-
                 </div>
               </div>
               <div class="row mb-4">
@@ -133,11 +67,9 @@
                     <a
                         href="#"
                         class="text-info toggle-link"
-                        data-target="ingredients-content"
-                    >
+                        data-target="ingredients-content">
                       {{ dish.ingredients.count }}
                     </a>
-
                   </span>
                   <br />
                   <span>Dish type:
@@ -148,17 +80,6 @@
                   <span class="h6">
                     <i class="fas fa-dollar-sign text-sm">
                     </i>{{ dish.price }}
-                  </span>
-
-
-                  <span class="h6">
-                    <a
-                        href="#"
-                        class="text-info toggle-link"
-                        data-target="dishes-content"
-                    >
-                    </a>
-
                   </span>
                 </div>
               </div>
@@ -177,7 +98,6 @@
                     <br />
                   {% endfor %}
                 </div>
-
             </div>
           </div>
         </div>
@@ -191,61 +111,7 @@
 {% block footer %}
 {% endblock footer %}
 
-
 {% block javascripts %}
-  <script>
-  function toggleContent(targetId) {
-    const targetElement = document.getElementById(targetId);
-    if (
-        targetElement.style.display === 'none' || targetElement.style.display === ''
-    ) {
-      targetElement.style.display = 'block';
-      localStorage.setItem(targetId, 'block');
-    } else {
-      targetElement.style.display = 'none';
-      localStorage.setItem(targetId, 'none');
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const toggleLink = document.querySelector('.toggle-link');
-    const targetId = toggleLink.getAttribute('data-target');
-    const storedState = localStorage.getItem(targetId);
-
-    if (storedState) {
-      document.getElementById(targetId).style.display = storedState;
-    }
-
-    toggleLink.addEventListener('click', (event) => {
-      event.preventDefault();
-      toggleContent(targetId);
-    });
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var modal = document.querySelector('.modal');
-    var openModalBtn = document.querySelector('.openModalBtn');
-
-    openModalBtn.addEventListener('click', function () {
-      modal.style.display = 'block';
-      document.body.style.overflow = 'hidden';
-
-      const backdrop = document.createElement('div');
-      backdrop.classList.add('modal-backdrop', 'fade', 'show');
-      document.body.appendChild(backdrop);
-    });
-
-    modal.addEventListener('click', function (event) {
-      if (event.target === modal || event.target.classList.contains('close')) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-
-        const backdrop = document.querySelector('.modal-backdrop');
-        document.body.removeChild(backdrop);
-      }
-    });
-  });
-</script>
+  <script src="/static/js/toggle_content_on_detail_page.js"></script>
+  <script src="/static/js/delete_modal_cook_dish.js"></script>
 {% endblock javascripts %}

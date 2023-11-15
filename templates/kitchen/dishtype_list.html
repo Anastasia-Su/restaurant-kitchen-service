@@ -1,70 +1,12 @@
-{#{% extends "base.html" %}#}
-{##}
-{#{% block content %}#}
-{#  <h1>#}
-{#    Dish Type List#}
-{#    <a href="{% url 'kitchen:dishtype-create' %}" class="btn btn-primary link-to-page">#}
-{#      Create#}
-{#    </a>#}
-{#  </h1>#}
-{#  {% include "includes/search_form.html" %}#}
-{##}
-{#  {% if dishtype_list %}#}
-{#    <table class="table">#}
-{#      <tr>#}
-{#        <th>ID</th>#}
-{#        <th>Name</th>#}
-{#        <th>Update</th>#}
-{#        <th>Delete</th>#}
-{#      </tr>#}
-{##}
-{#      {% for dishtype in dishtype_list %}#}
-{#        <tr>#}
-{#          <td>#}
-{#              {{ dishtype.id }}#}
-{#          </td>#}
-{#          <td>#}
-{#              {{ dishtype.name }}#}
-{#          </td>#}
-{#          <td>#}
-{#              <a href="{% url 'kitchen:dishtype-update' pk=dishtype.id %}">#}
-{#                Update#}
-{#              </a>#}
-{#            </td>#}
-{#            <td>#}
-{#              <a style="color: red"#}
-{#                href="{% url 'kitchen:dishtype-delete' pk=dishtype.id %}">#}
-{#                Delete#}
-{#              </a>#}
-{#            </td>#}
-{#        </tr>#}
-{#      {% endfor %}#}
-{#    </table>#}
-{##}
-{#  {% else %}#}
-{#      <p>There are no dish types in the service.</p>#}
-{#  {% endif %}#}
-{#{% endblock %}#}
-
-
-
 {% extends 'layouts/base_sections.html' %}
 {% load static %}
 {% load query_transform %}
-
 {% block title %}{% endblock title %}
-
 {% block body %} class="about-us" {% endblock body %}
-
-{% block header %}
-
-{% endblock header %}
+{% block header %}{% endblock header %}
 
 {% block content %}
   {% include "includes/search_form.html" %}
-
-
-
   <section class="pt-sm-8 pb-5 position-relative bg-gradient-dark">
     <div class="position-absolute w-100 z-inde-1 top-0 mt-n3">
       <svg width="100%" viewBox="0 -2 1920 157" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -82,39 +24,31 @@
       <div class="row d-flex justify-content-center align-items-center">
         <div class="col-md-8 text-start mb-5 mt-5">
           <div class="d-flex justify-content-center align-items-center mb-2">
-          <h3 class="text-white z-index-1 position-relative">Dish Types</h3>
-
-          <div class="d-block" style="margin-left: 30px;">
-              <a href="{% url 'kitchen:dishtype-create' %}">
-                <button
-                    type="button"
-                    class="btn btn-sm btn-outline-success text-nowrap mb-0"
-                    style="margin-right: 30px;">
-                  Create type
-                </button>
-              </a>
-          </div>
+            <h3 class="text-white z-index-1 position-relative">Dish Types</h3>
+            <div class="d-block" style="margin-left: 30px;">
+                <a href="{% url 'kitchen:dishtype-create' %}">
+                  <button
+                      type="button"
+                      class="btn btn-sm btn-outline-success text-nowrap mb-0"
+                      style="margin-right: 30px;">
+                    Create type
+                  </button>
+                </a>
             </div>
-
+          </div>
           <p class="text-white opacity-8 mb-0" style="text-align: center">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit.
             Mollitia facere dolore voluptatum velit consequuntur dolor excepturi eum!
           </p>
         </div>
       </div>
-
       <div class="row d-flex justify-content-center align-items-center">
-
           <div class="col-lg-6 col-md-6 col-12">
             <div class="card card-profile overflow-hidden">
-
               <ul class="list-group">
-
                 {% for dishtype in dishtype_list %}
                   {% include 'includes/confirm_delete_modal_dishtype.html' %}
-
                   <li class="list-group-item d-flex justify-content-between align-items-center">
-
                     <h5>
                       <a
                         href="#"
@@ -124,7 +58,6 @@
                         {{ dishtype.name }}
                       </a>
                     </h5>
-
                     <div class="d-flex justify-content-between align-items-center mb-0">
                       <a
                           href="{% url 'kitchen:dishtype-update' pk=dishtype.id %}?page={{ request.GET.page }}">
@@ -140,14 +73,11 @@
                           {% include "includes/delete_btn.html" %}
                       </a>
                     </div>
-
                   </li>
-
                   <div
                       id="dishtypes-content-{{ dishtype.id }}"
                       class="dishtypes-content"
-                      style="display: none;"
-                  >
+                      style="display: none;">
                     <ol>
                       {% if dishtype.dishes.all %}
                         {% for dish in dishtype.dishes.all %}
@@ -163,7 +93,6 @@
                          {% else %}
                               <p>No dishes of this type!</p>
                       {% endif %}
-
                     </ol>
                   </div>
                 {% endfor %}
@@ -173,10 +102,7 @@
       </div>
     </div>
   </section>
-
-
-{% include 'includes/confirm_delete_modal_dishtype.html' %}
-
+  {% include 'includes/confirm_delete_modal_dishtype.html' %}
 {% endblock content %}
 
 {% block pagination %}
@@ -184,65 +110,6 @@
 {% endblock %}
 
 {% block javascripts %}
-  <script>
-    function toggleContent(targetId) {
-        const targetElement = document.getElementById(targetId);
-
-        const allElems = document.querySelectorAll('.dishtypes-content');
-        allElems.forEach(elem => {
-            if (elem.id !== targetId) {
-                elem.style.display = 'none';
-            }
-        });
-
-        if (targetElement.style.display === 'none' || targetElement.style.display === '') {
-            targetElement.style.display = 'block';
-        } else {
-            targetElement.style.display = 'none';
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const toggleLinks = document.querySelectorAll('.toggle-link');
-        toggleLinks.forEach(toggleLink => {
-            toggleLink.addEventListener('click', (event) => {
-                event.preventDefault();
-                const targetId = toggleLink.getAttribute('data-target');
-                toggleContent(targetId);
-            });
-        });
-    });
-  </script>
-
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const openModalBtns = document.querySelectorAll('.openModalBtn');
-
-    openModalBtns.forEach(openModalBtn => {
-        openModalBtn.addEventListener('click', function () {
-            const dishtypeId = this.getAttribute('data-dishtype-id');
-            const modal = document.getElementById(`deleteModal${dishtypeId}`);
-
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-
-            const backdrop = document.createElement('div');
-            backdrop.classList.add('modal-backdrop', 'fade', 'show');
-            document.body.appendChild(backdrop);
-
-            modal.addEventListener('click', function (event) {
-              if (event.target === modal || event.target.classList.contains('close')) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-
-                const backdrop = document.querySelector('.modal-backdrop');
-                document.body.removeChild(backdrop);
-              }
-            });
-        });
-    });
-  });
-</script>
-
-
+  <script src="/static/js/toggle_content_dishtype.js"></script>
+  <script src="/static/js/delete_modal_dishtype.js"></script>
 {% endblock %}
