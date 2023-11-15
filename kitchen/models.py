@@ -48,7 +48,6 @@ class Dish(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=255)
-
     dishes = models.ManyToManyField(Dish, related_name="ingredients")
 
     def __str__(self):
