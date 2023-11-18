@@ -9,6 +9,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.edit import CreateView
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 
 from .forms import (
@@ -143,6 +145,7 @@ class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
 class DishListView(LoginRequiredMixin, generic.ListView):
     model = Dish
     paginate_by = 5
+    template_name = "kitchen/dish_list.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(DishListView, self).get_context_data(**kwargs)
@@ -155,50 +158,35 @@ class DishListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         queryset = Dish.objects.all()
 
-        # self.queryset = Dish.objects.select_related("dish_type")
         form = DishSearchForm(self.request.GET)
         if form.is_valid():
-            return queryset.filter(name__icontains=form.cleaned_data["name"])
+            queryset = queryset.filter(name__icontains=form.cleaned_data["name"])
 
-        # sort_by = self.request.GET.get('sort_by', 'name')
-        # if sort_by == 'name':
-        #     queryset = queryset.order_by('name')
-        # elif sort_by == 'price':
-        #     queryset = queryset.order_by('price')
-        # elif sort_by == 'dish_type':
-        #     queryset = queryset.order_by('dish_type__name')
+        sort_by = self.request.GET.get('sort_by', 'name')
+        if sort_by == 'name':
+            queryset = queryset.order_by('name')
+        elif sort_by == 'price':
+            queryset = queryset.order_by('price')
+        elif sort_by == 'dish_type':
+            queryset = queryset.order_by('dish_type__name')
 
         return queryset
 
-    # def get_ordering(self):
-    #     sort_by = self.request.GET.get('sort_by', 'name')
-    #
-    #     if sort_by == 'name':
-    #         return ['name']
-    #     elif sort_by == 'price':
-    #         return ['price']
-    #     elif sort_by == 'dish_type':
-    #         return ['dish_type__name']
-    #     else:
-    #         return super().get_ordering()
-    #
-    # def get(self, request, *args, **kwargs):
-    #     self.ordering = self.get_ordering()
-    #     return super().get(request, *args, **kwargs)
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            html_content = render_to_string(self.template_name, context)
 
-    # def get(self, request, *args, **kwargs):
-    #     queryset = self.get_queryset()
-    #     sort_by = request.GET.get('sort_by', 'name')  # Default sorting by name
-    #
-    #     if sort_by == 'name':
-    #         queryset = queryset.order_by('name')
-    #     elif sort_by == 'price':
-    #         queryset = queryset.order_by('price')
-    #     elif sort_by == 'dish_type':
-    #         queryset = queryset.order_by('dish_type__name')
-    #
-    #     context = {'dish_list': queryset, 'sort_by': sort_by}
-    #     return render(request, "kitchen/dish_list.html", context)
+            print(f'HTML Content: {html_content}')
+
+            return JsonResponse({'html_content': html_content})
+        else:
+            return super().render_to_response(context, **response_kwargs)
+    # def render_to_response(self, context, **response_kwargs):
+    #     if self.request.is_ajax():
+    #         html_content = render_to_string(self.template_name, context)
+    #         return JsonResponse({'html_content': html_content})
+    #     else:
+    #         return super().render_to_response(context, **response_kwargs)
 
 
 class DishDetailView(LoginRequiredMixin, generic.DetailView):

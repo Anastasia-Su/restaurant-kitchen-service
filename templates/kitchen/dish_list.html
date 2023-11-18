@@ -27,12 +27,11 @@
           <div class="d-flex justify-content-center align-items-center mb-2">
             <h3 class="text-white z-index-1 position-relative">Dishes</h3>
 
-            <div class="d-block" style="margin-left: 30px;">
+            <div class="d-block ms-4">
                 <a href="{% url 'kitchen:dish-create' %}">
                   <button
                       type="button"
-                      class="btn btn-sm btn-outline-success text-nowrap mb-0"
-                      style="margin-right: 30px;">
+                      class="btn btn-sm btn-outline-success text-nowrap mb-0 px-3 py-2">
                     Create dish
                   </button>
                 </a>
@@ -45,48 +44,52 @@
         </div>
       </div>
 
-
-{#      <div class="dropdown">#}
-{#          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
-{#            Sort by#}
-{#          </button>#}
-{#          <div id="dropdown-menu" style="display: none" aria-labelledby="dropdownMenuButton">#}
-{#            <table class="table table-hover w-10 bg-light rounded">#}
-{#              <tr>#}
-{#                <td><a class="dropdown-item fw-bolder" href="?sort_by=name">Name</a></td>#}
-{#              </tr>#}
-{#              <tr>#}
-{#                <td><a class="dropdown-item fw-bolder" href="?sort_by=price">Price</a></td>#}
-{#              </tr>#}
-{#              <tr>#}
-{#                <td><a class="dropdown-item fw-bolder" href="?sort_by=dish_type">Type</a></td>#}
-{#              </tr>#}
-{#            </table>#}
-{#          </div>#}
-{#      </div>#}
-
       <div class="row d-flex justify-content-center align-items-center">
-          <div class="col-lg-6 col-12">
-            <div class="card card-profile overflow-hidden">
-              <ul class="list-group">
-                {% for dish in dish_list %}
-                  {% include 'includes/confirm_delete_modal_dish.html' %}
-                  <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="col-lg-6 col-sm-12 col-12">
+            <table class="table bg-white rounded-3">
+              <thead class="thead-light">
+                <tr class="bg-light">
+                  <th scope="col" class="ps-2">
+                    <h5>
+                      <a href="?sort_by=name" class="header-link text-dark" >
+                        Name
+                        <i class="i-toggle fas fa-caret-down" style="display: inline"></i>&nbsp;
+
+                      </a>
+                      <a href="?sort_by=dish_type" class="header-link text-dark">
+                        (Type <i class="i-toggle fas fa-caret-down" style="display: none"></i>)
+                      </a>
+                    </h5>
+                  </th>
+                  <th scope="col" class="ps-2">
+                    <h5>
+                      <a href="?sort_by=price" class="header-link text-dark">Price
+                      <i class="i-toggle fas fa-caret-down" style="display: none"></i>
+                      </a>
+                    </h5>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for dish in dish_list %}
+                <tr>
+                  <td>
                     <h5>
                       <a
-                          href="{% url 'kitchen:dish-detail' pk=dish.id %}"
-                          class="text-info">
+                        href="{% url 'kitchen:dish-detail' pk=dish.id %}"
+                        class="text-info">
                         {{ dish.name }}
                       </a><br />
                       ({{ dish.dish_type.name }})
                     </h5>
-                    <div class="d-inline-block fw-bolder">
-                      {{ dish.price }}
-                    </div>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
+                  </td>
+                  <td class="fw-bolder">
+                    <i class="fas fa-dollar-sign text-sm"></i>{{ dish.price }}
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
           </div>
       </div>
     </div>
@@ -98,37 +101,5 @@
 {% endblock %}
 
 {% block javascripts %}
-  {#DROPDOWN#}
-{#  <script>#}
-{#    function toggleDropdown() {#}
-{#        const dropdownMenu = document.getElementById('dropdown-menu');#}
-{#        dropdownMenu.style.display = (dropdownMenu.style.display === 'block') ? 'none' : 'block';#}
-{#    }#}
-{##}
-{#    const dropdown_btn = document.querySelector('.dropdown-toggle');#}
-{##}
-{#    dropdown_btn.addEventListener('click', function (e) {#}
-{#        toggleDropdown();#}
-{##}
-{#    });#}
-{##}
-    {#const items = document.querySelectorAll(".dropdown-item");#}
-    {#items.forEach(item => {#}
-    {#    item.addEventListener('click', function (e) {#}
-    {#        e.preventDefault();#}
-    {##}
-    {#        dropdown_btn.textContent = item.textContent;#}
-    {##}
-    {#        toggleDropdown();#}
-    {#    });#}
-{##}
-{##}
-{#    document.addEventListener('click', function (event) {#}
-{#        const dropdown = document.querySelector('.dropdown');#}
-{#        if (!dropdown.contains(event.target)) {#}
-{#            const dropdownMenu = document.getElementById('dropdown-menu');#}
-{#            dropdownMenu.style.display = 'none';#}
-{#        }#}
-{#    });#}
-{#</script>#}
+  <script src="/static/js/toggle_sorting_icon.js"></script>
 {% endblock javascripts %}

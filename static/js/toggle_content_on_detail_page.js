@@ -10,7 +10,5 @@ const toggleLink = document.querySelector('.toggle-link');
 const targetId = toggleLink.getAttribute('data-target');
 toggleLink.addEventListener('click', (event) => {
   event.preventDefault();
-  event.stopPropagation();
   toggleContent(targetId);
-
 });
