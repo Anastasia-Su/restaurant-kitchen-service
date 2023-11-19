@@ -49,27 +49,19 @@
 
 <body {% block body %}{% endblock body %} >
 
-  {% block header %}
-
-{#    {% include 'includes/navigation.html' %}#}
-
-  {% endblock header %}
+  {% block header %}{% endblock header %}
 
   {% block content %}{% endblock content %}
 
-  {% block pagination %}
+  {% block pagination %}{% endblock %}
 
-  {% endblock %}
-
-  {% block footer %}
-  
-{#    {% include 'includes/footer_background.html' %}#}
-
-  {% endblock footer %}
+  {% block footer %}{% endblock footer %}
 
   {% include 'includes/scripts.html' %}
 
-  {% block javascripts %}{% endblock javascripts %}
+  {% block javascripts %}
+      <script src="/static/js/toggle_hamburger_menu.js"></script>
+  {% endblock javascripts %}
 
 </body>
 </html>
