@@ -11,6 +11,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.edit import CreateView
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.shortcuts import get_object_or_404
 
 
 from .forms import (
@@ -181,16 +182,29 @@ class DishListView(LoginRequiredMixin, generic.ListView):
             return JsonResponse({'html_content': html_content})
         else:
             return super().render_to_response(context, **response_kwargs)
-    # def render_to_response(self, context, **response_kwargs):
-    #     if self.request.is_ajax():
-    #         html_content = render_to_string(self.template_name, context)
-    #         return JsonResponse({'html_content': html_content})
-    #     else:
-    #         return super().render_to_response(context, **response_kwargs)
 
+
+
+# class DishDetailView(LoginRequiredMixin, generic.DetailView):
+#     model = Dish
 
 class DishDetailView(LoginRequiredMixin, generic.DetailView):
     model = Dish
+    template_name = 'kitchen/dish_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add additional context if needed
+        return context
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.headers.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            # If it's an AJAX request, return a JSON response
+            html_content = render_to_string('kitchen/dish_detail_ajax.html', context, request=self.request)
+            return JsonResponse({'html_content': html_content})
+        else:
+            # If it's a regular request, proceed with the regular response
+            return super().render_to_response(context, **response_kwargs)
 
 
 class DishCreateView(LoginRequiredMixin, generic.CreateView):
@@ -288,11 +302,67 @@ class CookDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("kitchen:cook-list")
 
 
+
+# def toggle_assign_to_dish(request, pk):
+#     cook = Cook.objects.get(id=request.user.id)
+#     if Dish.objects.get(id=pk) in cook.dishes.all():
+#         cook.dishes.remove(pk)
+#     else:
+#         cook.dishes.add(pk)
+#     return HttpResponseRedirect(reverse_lazy("kitchen:dish-detail", args=[pk]))
+
+
 @login_required
 def toggle_assign_to_dish(request, pk):
-    cook = Cook.objects.get(id=request.user.id)
-    if Dish.objects.get(id=pk) in cook.dishes.all():
-        cook.dishes.remove(pk)
+    cook = get_object_or_404(Cook, id=request.user.id)
+    dish = get_object_or_404(Dish, id=pk)
+
+    if dish in cook.dishes.all():
+        cook.dishes.remove(dish)
     else:
-        cook.dishes.add(pk)
-    return HttpResponseRedirect(reverse_lazy("kitchen:dish-detail", args=[pk]))
+        cook.dishes.add(dish)
+
+    return JsonResponse({'success': True})
+
+def get_dish_html(request, pk):
+    dish = get_object_or_404(Dish, pk=pk)
+    context = {'dish': dish}
+    html_content = render_to_string("kitchen/dish_detail_ajax.html", context)
+
+    return JsonResponse({'html_content': html_content})
+
+
+
+# def toggle_assign_to_dish(request, pk):
+#     cook = Cook.objects.get(id=request.user.id)
+#     if Dish.objects.get(id=pk) in cook.dishes.all():
+#         cook.dishes.remove(pk)
+#     else:
+#         cook.dishes.add(pk)
+#     return HttpResponseRedirect(reverse_lazy("kitchen:dish-detail", args=[pk]))
+
+# def toggle_assign_to_dish(request, pk):
+#     cook = get_object_or_404(Cook, id=request.user.id)
+#     dish = get_object_or_404(Dish, id=pk)
+#
+#     if dish in cook.dishes.all():
+#         cook.dishes.remove(dish)
+#     else:
+#         cook.dishes.add(dish)
+#
+#     dish = get_object_or_404(Dish, pk=pk)
+#
+#     context = {'dish': dish}
+#     html_content = render_to_string("kitchen/dish_detail_ajax.html", context)
+#     return JsonResponse({'html_content': html_content})
+
+
+# class DishDetailAjaxView(View):
+#     template_name = "kitchen/dish_detail_ajax.html"
+#
+#     def get(self, request, pk, *args, **kwargs):
+#         dish = get_object_or_404(Dish, pk=pk)
+#
+#         context = {'dish': dish}
+#         html_content = render_to_string(self.template_name, context)
+#         return JsonResponse({'html_content': html_content})
