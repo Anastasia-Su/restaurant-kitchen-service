@@ -1,11 +1,8 @@
 {% extends 'layouts/base_sections.html' %}
 {% load static %}
-
 {% block title %}{% endblock title %}
 {% block body %} class="about-us" {% endblock body %}
-
-{% block header %}
-{% endblock header %}
+{% block header %}{% endblock header %}
 
 {% block content %}
   {% include "includes/search_form.html" %}
@@ -24,9 +21,9 @@
       </svg>
     </div>
     <div class="container">
-      <div class="row">
+      <div class="row d-flex justify-content-center align-items-center">
         <div class="col-md-8 text-start mb-5 mt-5">
-          <div class="d-flex justify-content-left align-items-center mb-2">
+          <div class="d-flex justify-content-center align-items-center mb-2">
             <h3 class="text-white z-index-1 position-relative">Cook Team</h3>
 
             <div class="d-block ms-4">
@@ -40,7 +37,7 @@
               </div>
             </div>
 
-          <p class="text-white opacity-8 mb-0">
+          <p class="text-white opacity-8 mb-0 text-center">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit.
             Mollitia facere dolore voluptatum velit consequuntur dolor excepturi eum!
           </p>
@@ -49,13 +46,11 @@
 
       <div class="row">
         {% for cook in cook_list %}
-
           <div class="col-lg-6 col-12" style="margin: 7px 0;">
             <div class="card card-profile overflow-hidden">
               <div class="row">
                 <div
-                    class="col-lg-4 col-md-6 col-12 pe-lg-0"
-                    >
+                    class="col-lg-4 col-md-6 col-12 pe-lg-0">
                   <a href="javascript:;">
                     <div class="p-3 pe-md-0">
                       <img
@@ -92,5 +87,4 @@
     {% include "includes/pagination.html" %}
   {% endblock %}
 
-  {% block javascrips %}
-  {% endblock javascrips %}
+  {% block javascrips %}{% endblock javascrips %}

@@ -18,8 +18,7 @@ from .views import (
     CookUpdateView,
     CookDeleteView,
     RememberMeLoginView,
-    SignUpView, get_dish_html,
-    # DishDetailAjaxView,
+    SignUpView,
 )
 
 urlpatterns = [
@@ -69,9 +68,6 @@ urlpatterns = [
         CookDeleteView.as_view(),
         name="cook-delete",
     ),
-    # path("ajax/dishes/<int:pk>/", toggle_assign_to_dish, name="toggle-dish-assign"),
-    path("ajax/dishes/<int:pk>/", toggle_assign_to_dish, name="toggle-dish-assign"),
-    path("ajax/dishes/<int:pk>/html/", get_dish_html, name="get-dish-html"),
 ]
 
 app_name = "kitchen"

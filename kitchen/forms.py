@@ -1,11 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.core.exceptions import ValidationError
 from django.utils.html import format_html
-
 from kitchen.models import DishType, Dish, Cook, Ingredient
-from django.contrib.auth.forms import AuthenticationForm
 
 
 class DishForm(forms.ModelForm):

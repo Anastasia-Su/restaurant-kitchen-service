@@ -1,16 +1,10 @@
 {% extends 'layouts/base_sections.html' %}
 {% load static %}
-
 {% block title %}{% endblock title %}
-
 {% block body %} class="blog-author" {% endblock body %}
-
-{% block header %}
-{% endblock header %}
+{% block header %}{% endblock header %}
 
 {% block content %}
-
-
   <section class="py-sm-7 py-5 position-relative">
     <div class="container" id="cooks-container">
       <div class="row">
@@ -31,7 +25,6 @@
                   </a>
                   <a href="#" class="openModalBtn">
                     {% include "includes/delete_btn.html" %}
-
                   </a>
                 </div>
               </div>
@@ -75,7 +68,6 @@
                     <br />
                   {% endfor %}
                 </div>
-
             </div>
           </div>
         </div>
@@ -84,12 +76,7 @@
   </section>
 
   {% include 'includes/confirm_delete_modal_cook.html' %}
-
 {% endblock content %}
-
-{% block footer %}
-{% endblock footer %}
-
 
 {% block javascripts %}
   <script src="/static/js/toggle_content_on_detail_page.js"></script>

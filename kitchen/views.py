@@ -1,17 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, QueryDict
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import QueryDict
-from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.edit import CreateView
-from django.http import JsonResponse
-from django.template.loader import render_to_string
-from django.shortcuts import get_object_or_404
 
 
 from .forms import (
@@ -27,8 +22,6 @@ from .models import DishType, Dish, Cook
 
 @login_required
 def index(request):
-    """View function for the home page of the site."""
-
     num_cooks = Cook.objects.count()
     num_dishes = Dish.objects.count()
     num_dish_types = DishType.objects.count()
@@ -60,9 +53,6 @@ class RememberMeLoginView(View):
         password = request.session.pop("remember_me_password", "")
         form = AuthenticationForm(initial={"username": username, "password": password})
         return render(request, self.template_name, {"form": form})
-        #
-        # form.fields['username'].widget.attrs['placeholder'] = 'Username'
-        # form.fields['password'].widget.attrs['placeholder'] = 'Password'
 
     def post(self, request, *args, **kwargs):
         form = AuthenticationForm(request, data=request.POST)
@@ -99,11 +89,11 @@ class DishTypeListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        self.queryset = DishType.objects.all().order_by("name")
+        queryset = DishType.objects.all().order_by("name")
         form = DishTypeSearchForm(self.request.GET)
         if form.is_valid():
-            return self.queryset.filter(name__icontains=form.cleaned_data["name"])
-        return self.queryset
+            return queryset.filter(name__icontains=form.cleaned_data["name"])
+        return queryset
 
 
 class DishTypeCreateView(LoginRequiredMixin, generic.CreateView):
@@ -163,48 +153,19 @@ class DishListView(LoginRequiredMixin, generic.ListView):
         if form.is_valid():
             queryset = queryset.filter(name__icontains=form.cleaned_data["name"])
 
-        sort_by = self.request.GET.get('sort_by', 'name')
-        if sort_by == 'name':
-            queryset = queryset.order_by('name')
-        elif sort_by == 'price':
-            queryset = queryset.order_by('price')
-        elif sort_by == 'dish_type':
-            queryset = queryset.order_by('dish_type__name')
+        sort_by = self.request.GET.get("sort_by", "name")
+        if sort_by == "name":
+            queryset = queryset.order_by("name")
+        elif sort_by == "price":
+            queryset = queryset.order_by("price")
+        elif sort_by == "dish_type":
+            queryset = queryset.order_by("dish_type__name")
 
         return queryset
 
-    def render_to_response(self, context, **response_kwargs):
-        if self.request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-            html_content = render_to_string(self.template_name, context)
-
-            print(f'HTML Content: {html_content}')
-
-            return JsonResponse({'html_content': html_content})
-        else:
-            return super().render_to_response(context, **response_kwargs)
-
-
-
-# class DishDetailView(LoginRequiredMixin, generic.DetailView):
-#     model = Dish
 
 class DishDetailView(LoginRequiredMixin, generic.DetailView):
     model = Dish
-    template_name = 'kitchen/dish_detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Add additional context if needed
-        return context
-
-    def render_to_response(self, context, **response_kwargs):
-        if self.request.headers.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-            # If it's an AJAX request, return a JSON response
-            html_content = render_to_string('kitchen/dish_detail_ajax.html', context, request=self.request)
-            return JsonResponse({'html_content': html_content})
-        else:
-            # If it's a regular request, proceed with the regular response
-            return super().render_to_response(context, **response_kwargs)
 
 
 class DishCreateView(LoginRequiredMixin, generic.CreateView):
@@ -281,7 +242,6 @@ class CookListView(LoginRequiredMixin, generic.ListView):
 class CookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Cook
     queryset = Cook.objects.all()
-    # queryset = Cook.objects.prefetch_related("dishes__dish_type")
 
 
 class CookCreateView(generic.CreateView):
@@ -302,67 +262,11 @@ class CookDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("kitchen:cook-list")
 
 
-
-# def toggle_assign_to_dish(request, pk):
-#     cook = Cook.objects.get(id=request.user.id)
-#     if Dish.objects.get(id=pk) in cook.dishes.all():
-#         cook.dishes.remove(pk)
-#     else:
-#         cook.dishes.add(pk)
-#     return HttpResponseRedirect(reverse_lazy("kitchen:dish-detail", args=[pk]))
-
-
 @login_required
 def toggle_assign_to_dish(request, pk):
-    cook = get_object_or_404(Cook, id=request.user.id)
-    dish = get_object_or_404(Dish, id=pk)
-
-    if dish in cook.dishes.all():
-        cook.dishes.remove(dish)
+    cook = Cook.objects.get(id=request.user.id)
+    if Dish.objects.get(id=pk) in cook.dishes.all():
+        cook.dishes.remove(pk)
     else:
-        cook.dishes.add(dish)
-
-    return JsonResponse({'success': True})
-
-def get_dish_html(request, pk):
-    dish = get_object_or_404(Dish, pk=pk)
-    context = {'dish': dish}
-    html_content = render_to_string("kitchen/dish_detail_ajax.html", context)
-
-    return JsonResponse({'html_content': html_content})
-
-
-
-# def toggle_assign_to_dish(request, pk):
-#     cook = Cook.objects.get(id=request.user.id)
-#     if Dish.objects.get(id=pk) in cook.dishes.all():
-#         cook.dishes.remove(pk)
-#     else:
-#         cook.dishes.add(pk)
-#     return HttpResponseRedirect(reverse_lazy("kitchen:dish-detail", args=[pk]))
-
-# def toggle_assign_to_dish(request, pk):
-#     cook = get_object_or_404(Cook, id=request.user.id)
-#     dish = get_object_or_404(Dish, id=pk)
-#
-#     if dish in cook.dishes.all():
-#         cook.dishes.remove(dish)
-#     else:
-#         cook.dishes.add(dish)
-#
-#     dish = get_object_or_404(Dish, pk=pk)
-#
-#     context = {'dish': dish}
-#     html_content = render_to_string("kitchen/dish_detail_ajax.html", context)
-#     return JsonResponse({'html_content': html_content})
-
-
-# class DishDetailAjaxView(View):
-#     template_name = "kitchen/dish_detail_ajax.html"
-#
-#     def get(self, request, pk, *args, **kwargs):
-#         dish = get_object_or_404(Dish, pk=pk)
-#
-#         context = {'dish': dish}
-#         html_content = render_to_string(self.template_name, context)
-#         return JsonResponse({'html_content': html_content})
+        cook.dishes.add(pk)
+    return HttpResponseRedirect(reverse_lazy("kitchen:dish-detail", args=[pk]))

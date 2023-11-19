@@ -3,7 +3,7 @@ function toggleContent(targetId) {
     targetElement.style.display = targetElement.style.display === 'none' || targetElement.style.display === ''
         ? 'block'
         : 'none';
-    const labelIngred = document.querySelector(".field-lbl");
+    const labelIngred = document.querySelector('.field-lbl');
     labelIngred.style.display = targetElement.style.display === 'block' ? 'none' : 'block';
   }
 

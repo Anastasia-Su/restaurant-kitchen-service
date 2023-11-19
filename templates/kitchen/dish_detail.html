@@ -3,9 +3,7 @@
 
 {% block title %}{% endblock title %}
 {% block body %} class="blog-author" {% endblock body %}
-
-{% block header %}
-{% endblock header %}
+{% block header %}{% endblock header %}
 
 {% block content %}
   <section class="py-sm-7 py-5 position-relative">
@@ -18,37 +16,36 @@
                   class="img border-radius-lg max-width-200 w-100 position-relative z-index-2"
                   src="{% static 'css/img/pixaby/cakes.jpg' %}"
                   alt="Cake om-nom-nom">
-              <div id="ajax-update-container">
-                <div class="text-start fs-5 fw-bolder ps-3 mt-5 mb-2">
-                  Cooks
-                </div>
-                  <ul class="list-group list-group-flush">
-                    {% for cook in dish.cooks.all %}
-                        <li class="list-group-item">
-                          <a href="{{ cook.get_absolute_url }}">
-                            {% if cook.first_name and cook.last_name %}
-                              {{ cook.first_name }} {{ cook.last_name }}
-                              {% else %}
-                              {{ cook.username }}
-                            {% endif %}
-                          </a>
-                        </li>
-                    {% endfor %}
-                  </ul>
-                {% if dish in user.dishes.all %}
-                  <a
-                      href="{% url 'kitchen:toggle-dish-assign' pk=dish.id %}"
-                      class="btn btn-sm btn-outline-danger text-nowrap mt-3 link-to-page assign">
-                      Delete me from this dish
-                  </a>
-                {% else %}
-                  <a
-                      href="{% url 'kitchen:toggle-dish-assign' pk=dish.id %}"
-                      class="btn btn-sm btn-outline-success text-nowrap mt-3 link-to-page assign">
-                      Assign me to this dish
-                  </a>
-                {% endif %}
+
+              <div class="text-start fs-5 fw-bolder ps-3 mt-5 mb-2">
+                Cooks
               </div>
+                <ul class="list-group list-group-flush">
+                  {% for cook in dish.cooks.all %}
+                      <li class="list-group-item">
+                        <a href="{{ cook.get_absolute_url }}">
+                          {% if cook.first_name and cook.last_name %}
+                            {{ cook.first_name }} {{ cook.last_name }}
+                            {% else %}
+                            {{ cook.username }}
+                          {% endif %}
+                        </a>
+                      </li>
+                  {% endfor %}
+                </ul>
+              {% if dish in user.dishes.all %}
+                <a
+                    href="{% url 'kitchen:toggle-dish-assign' pk=dish.id %}"
+                    class="btn btn-sm btn-outline-danger text-nowrap mt-3 link-to-page assign">
+                    Delete me from this dish
+                </a>
+              {% else %}
+                <a
+                    href="{% url 'kitchen:toggle-dish-assign' pk=dish.id %}"
+                    class="btn btn-sm btn-outline-success text-nowrap mt-3 link-to-page assign">
+                    Assign me to this dish
+                </a>
+              {% endif %}
             </div>
             <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mt-sm-0 mt-4">
               <div class="d-flex justify-content-between align-items-start mb-2">
@@ -109,52 +106,8 @@
   {% include 'includes/confirm_delete_modal_dish.html' %}
 {% endblock content %}
 
-{% block footer %}
-{% endblock footer %}
-
 {% block javascripts %}
   <script src="/static/js/toggle_content_on_detail_page.js"></script>
   <script src="/static/js/delete_modal_cook_dish.js"></script>
   <script src="/static/js/toggle_hamburger_menu.js"></script>
-
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const container = document.getElementById('ajax-update-container');
-    const btns = document.querySelectorAll(".assign");
-
-    const headers = new Headers({
-        'X-Requested-With': 'XMLHttpRequest',
-    });
-
-    btns.forEach(btn => {
-        btn.addEventListener("click", (event) => {
-            event.preventDefault();
-
-            fetch(`/ajax/dishes/24/`, {
-                headers: headers,
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Received data:', data);  // Add this line
-
-                if (data.success) {
-                    // If assignment toggle was successful, fetch HTML content
-                    fetch(`/ajax/dishes/24/html/`, {
-                        headers: headers,
-                    })
-                    .then(response => response.json())
-                    .then(htmlData => {
-                        console.log('Received HTML data:', htmlData);  // Add this line
-                        container.innerHTML = htmlData.html_content;
-                    })
-                    .catch(error => console.error("Error:", error));
-                } else {
-                    console.error('Toggle assign was not successful');
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        });
-    });
-});
-</script>
 {% endblock javascripts %}
