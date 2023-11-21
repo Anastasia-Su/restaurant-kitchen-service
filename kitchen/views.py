@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.edit import CreateView
+from django.conf import settings
 
 
 from .forms import (
@@ -66,7 +67,9 @@ class RememberMeLoginView(View):
             if user is not None:
                 login(request, user)
                 if remember_me:
-                    self.request.session.set_expiry(1209600)
+                    self.request.session.set_expiry(
+                        settings.SESSION_COOKIE_AGE
+                    )
                 else:
                     self.request.session.set_expiry(0)
 
