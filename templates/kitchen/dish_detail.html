@@ -20,32 +20,35 @@
               <div class="text-start fs-5 fw-bolder ps-3 mt-5 mb-2">
                 Cooks
               </div>
-                <ul class="list-group list-group-flush">
-                  {% for cook in dish.cooks.all %}
-                      <li class="list-group-item">
-                        <a href="{{ cook.get_absolute_url }}">
-                          {% if cook.first_name and cook.last_name %}
-                            {{ cook.first_name }} {{ cook.last_name }}
-                            {% else %}
-                            {{ cook.username }}
-                          {% endif %}
-                        </a>
-                      </li>
-                  {% endfor %}
-                </ul>
-              {% if dish in user.dishes.all %}
-                <a
-                    href="{% url 'kitchen:toggle-dish-assign' pk=dish.id %}"
-                    class="btn btn-sm btn-outline-danger text-nowrap mt-3 link-to-page assign">
-                    Delete me from this dish
-                </a>
-              {% else %}
-                <a
-                    href="{% url 'kitchen:toggle-dish-assign' pk=dish.id %}"
-                    class="btn btn-sm btn-outline-success text-nowrap mt-3 link-to-page assign">
-                    Assign me to this dish
-                </a>
-              {% endif %}
+              <ul class="list-group list-group-flush">
+                {% for cook in dish.cooks.all %}
+                    <li class="list-group-item">
+                      <a href="{{ cook.get_absolute_url }}">
+                        {% if cook.first_name and cook.last_name %}
+                          {{ cook.first_name }} {{ cook.last_name }}
+                          {% else %}
+                          {{ cook.username }}
+                        {% endif %}
+                      </a>
+                    </li>
+                {% endfor %}
+              </ul>
+              <form method="post" action="">
+                {% csrf_token %}
+                {% if dish in user.dishes.all %}
+                  <input
+                      type="submit"
+                      class="btn btn-sm btn-outline-danger text-nowrap mt-3 link-to-page assign"
+                      value="Delete me from this dish"
+                  >
+                {% else %}
+                  <input
+                      type="submit"
+                      class="btn btn-sm btn-outline-success text-nowrap mt-3 link-to-page assign"
+                      value="Assign me to this dish"
+                  >
+                {% endif %}
+              </form>
             </div>
             <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mt-sm-0 mt-4">
               <div class="d-flex justify-content-between align-items-start mb-2">

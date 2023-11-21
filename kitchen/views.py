@@ -154,18 +154,31 @@ class DishListView(LoginRequiredMixin, generic.ListView):
             queryset = queryset.filter(name__icontains=form.cleaned_data["name"])
 
         sort_by = self.request.GET.get("sort_by", "name")
-        if sort_by == "name":
-            queryset = queryset.order_by("name")
-        elif sort_by == "price":
-            queryset = queryset.order_by("price")
-        elif sort_by == "dish_type":
-            queryset = queryset.order_by("dish_type__name")
+        sort_by_dict = {
+            "name": "name",
+            "price": "price",
+            "dish_type": "dish_type__name",
+        }
+        for key, value in sort_by_dict.items():
+            if sort_by == key:
+                queryset = queryset.order_by(value)
 
         return queryset
 
 
 class DishDetailView(LoginRequiredMixin, generic.DetailView):
     model = Dish
+
+    def post(self, request, *args, **kwargs):
+        dish = self.get_object()
+        cook = self.request.user
+
+        if dish.cooks.filter(id=cook.id).exists():
+            dish.cooks.remove(cook)
+        else:
+            dish.cooks.add(cook)
+
+        return redirect("kitchen:dish-detail", pk=dish.pk)
 
 
 class DishCreateView(LoginRequiredMixin, generic.CreateView):
@@ -260,13 +273,3 @@ class CookUpdateView(LoginRequiredMixin, generic.UpdateView):
 class CookDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Cook
     success_url = reverse_lazy("kitchen:cook-list")
-
-
-@login_required
-def toggle_assign_to_dish(request, pk):
-    cook = Cook.objects.get(id=request.user.id)
-    if Dish.objects.get(id=pk) in cook.dishes.all():
-        cook.dishes.remove(pk)
-    else:
-        cook.dishes.add(pk)
-    return HttpResponseRedirect(reverse_lazy("kitchen:dish-detail", args=[pk]))
