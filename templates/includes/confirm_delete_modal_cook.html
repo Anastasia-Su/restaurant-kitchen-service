@@ -11,7 +11,7 @@
       </div>
 
       <div class="modal-footer justify-content-center">
-          <form action="{% url 'kitchen:cook-delete' pk=cook.id %}" method="post">
+          <form action="{% url 'users:cook-delete' pk=cook.id %}" method="post">
           {% csrf_token %}
 
           <button type="submit" class="btn btn-danger">Delete</button>

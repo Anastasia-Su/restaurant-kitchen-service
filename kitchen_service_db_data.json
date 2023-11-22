@@ -71,7 +71,7 @@
   },
 
   {
-    "model": "kitchen.cook",
+    "model": "users.cook",
     "pk": 1,
     "fields": {
       "password": "pbkdf2_sha256$320000$6uM28XWOFX6ewyloJzjqmt$L+ZhofPylneoaL2iZS4sZu4ZMUNb4oIevfAdzOMn/eE=",
@@ -90,7 +90,7 @@
     }
   },
   {
-    "model": "kitchen.cook",
+    "model": "users.cook",
     "pk": 2,
     "fields": {
       "password": "pbkdf2_sha256$320000$73Z1Y57bcoscZ37s9rE9v0$4SEQ0TtXwJKzO5/CRdFSrTifatiPjkZ38gM2H8Kqsdg=",
@@ -109,7 +109,7 @@
     }
   },
   {
-    "model": "kitchen.cook",
+    "model": "users.cook",
     "pk": 3,
     "fields": {
       "password": "pbkdf2_sha256$320000$QtPol3T7x9quBj4BnbnVwW$UwT4kihkRfSvQEWEeuqVKwMgis2ikKVZfJDBcQMvOKY=",
@@ -128,7 +128,7 @@
     }
   },
   {
-    "model": "kitchen.cook",
+    "model": "users.cook",
     "pk": 4,
     "fields": {
       "password": "pbkdf2_sha256$320000$9yU0PLTDKlL02PedUtk2l1$LKjj8O1xGiPGEkDpjsHk87db1iLgt8dgDqECzcsivio",
@@ -147,7 +147,7 @@
     }
   },
   {
-    "model": "kitchen.cook",
+    "model": "users.cook",
     "pk": 5,
     "fields": {
       "password": "pbkdf2_sha256$320000$9yU0PLTDKlL02PedUtk2l1$LKjj8O1xGiPGEkDpjsHk87db1iLgt8dgDqECzcsivio",
@@ -166,7 +166,7 @@
     }
   },
   {
-    "model": "kitchen.cook",
+    "model": "users.cook",
     "pk": 6,
     "fields": {
       "password": "pbkdf2_sha256$320000$9yU0PLTDKlL02PedUtk2l2$LKjj8O1xGiPGEkDpjsHk87db1iLgt8dgDqECzcsivio",
@@ -185,7 +185,7 @@
     }
   },
   {
-    "model": "kitchen.cook",
+    "model": "users.cook",
     "pk": 7,
     "fields": {
       "password": "pbkdf2_sha256$320000$9yU0PLTDKlL02PedUtk2l2$LKjj8O1xGiPGEkDpjsHk87db1iLgt8dgDqECzcsivio",

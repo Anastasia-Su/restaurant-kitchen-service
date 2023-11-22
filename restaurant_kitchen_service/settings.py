@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap4",
     "kitchen",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -114,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = "kitchen.Cook"
+AUTH_USER_MODEL = "users.Cook"
 
 
 # Internationalization
@@ -147,6 +148,6 @@ LOGIN_REDIRECT_URL = "/"
 
 LOGOUT_REDIRECT_URL = "login"
 
-AUTH_USER_MODEL = "kitchen.Cook"
+AUTH_USER_MODEL = "users.Cook"
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
