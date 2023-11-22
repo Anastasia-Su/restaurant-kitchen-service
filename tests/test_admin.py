@@ -16,7 +16,7 @@ class AdminTests(TestCase):
         self.cook = get_user_model_function()
 
     def test_hire_date_listed(self) -> None:
-        url = reverse("admin:kitchen_cook_changelist")
+        url = reverse("admin:users_cook_changelist")
         res = self.client.get(url)
 
         formatted_date = formats.date_format(self.cook.hire_date, "DATE_FORMAT")
@@ -24,12 +24,12 @@ class AdminTests(TestCase):
         self.assertContains(res, str(formatted_date))
 
     def test_cook_detail_hire_date_listed(self) -> None:
-        url = reverse("admin:kitchen_cook_change", args=[self.cook.id])
+        url = reverse("admin:users_cook_change", args=[self.cook.id])
         res = self.client.get(url)
         self.assertContains(res, self.cook.hire_date)
 
     def test_cook_add_fieldsets(self) -> None:
-        url = reverse("admin:kitchen_cook_add")
+        url = reverse("admin:users_cook_add")
         res = self.client.get(url)
         expected_fields = ["first_name", "last_name", "hire_date"]
 

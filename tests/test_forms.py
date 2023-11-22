@@ -1,8 +1,7 @@
 import datetime
 
-from django.contrib.auth import get_user_model
 from django.test import TestCase
-from kitchen.forms import CookCreationForm
+from users.forms import CookCreationForm
 
 
 class FormTests(TestCase):

@@ -1,12 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from kitchen.models import DishType, Dish, Cook
+from kitchen.models import DishType, Dish
 from .get_user_model_function import get_user_model_function
 
 TYPE_URL = reverse("kitchen:dishtype-list")
 DISH_URL = reverse("kitchen:dish-list")
-COOK_URL = reverse("kitchen:cook-list")
+COOK_URL = reverse("users:cook-list")
 
 
 class PublicTypeTest(TestCase):
@@ -95,4 +95,4 @@ class PrivateCookTest(TestCase):
         cooks = get_user_model().objects.all()
         self.assertEqual(list(res.context["cook_list"]), list(cooks))
 
-        self.assertTemplateUsed(res, "kitchen/cook_list.html")
+        self.assertTemplateUsed(res, "users/cook_list.html")

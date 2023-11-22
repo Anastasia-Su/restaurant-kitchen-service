@@ -1,8 +1,10 @@
 from django.test import TestCase
 from parameterized import parameterized
 from django.contrib.auth import get_user_model
-from kitchen.models import DishType, Dish, Cook
-from kitchen.forms import DishTypeSearchForm, DishSearchForm, CookSearchForm
+from kitchen.models import DishType, Dish
+from kitchen.forms import DishTypeSearchForm, DishSearchForm
+from users.forms import CookSearchForm
+from users.models import Cook
 
 
 class SearchFeatureTest(TestCase):
