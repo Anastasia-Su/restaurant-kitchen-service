@@ -91,12 +91,11 @@
 
                 <div id="ingredients-content" style="display: none;">
                   {% for ingredient in dish.ingredients.all %}
-                    <a
-                        href="#"
+                    <span
                         class="text-info icon-move-right fw-bolder fs-6"
                         style="margin-top: 5px; display: inline-block;">
                         {{ ingredient.name }}
-                    </a>
+                    </span>
                     <br />
                   {% endfor %}
                 </div>

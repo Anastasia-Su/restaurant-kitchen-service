@@ -14,23 +14,22 @@ from .models import DishType, Dish
 from users.models import Cook
 
 
-@login_required
-def index(request):
-    num_cooks = Cook.objects.count()
-    num_dishes = Dish.objects.count()
-    num_dish_types = DishType.objects.count()
+class IndexView(LoginRequiredMixin, generic.TemplateView):
+    template_name = "kitchen/index.html"
 
-    num_visits = request.session.get("num_visits", 0)
-    request.session["num_visits"] = num_visits + 1
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        num_cooks = Cook.objects.count()
+        num_dishes = Dish.objects.count()
+        num_dish_types = DishType.objects.count()
 
-    context = {
-        "num_cooks": num_cooks,
-        "num_dishes": num_dishes,
-        "num_dish_types": num_dish_types,
-        "num_visits": num_visits + 1,
-    }
+        context.update({
+            "num_cooks": num_cooks,
+            "num_dishes": num_dishes,
+            "num_dish_types": num_dish_types,
+        })
 
-    return render(request, "kitchen/index.html", context=context)
+        return context
 
 
 class DishTypeListView(LoginRequiredMixin, generic.ListView):
