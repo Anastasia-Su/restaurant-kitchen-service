@@ -1,0 +1,28 @@
+<div
+    class="modal"
+    tabindex="-1"
+    role="dialog"
+    id="deleteModal{{ dishtype.id }}"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h5 class="modal-title">Are you sure you want to delete {{ dishtype.name }}?</h5>
+      </div>
+
+      <div class="modal-footer justify-content-center">
+          <form
+              id="deleteForm"
+               {% if dishtype.id %}
+                    action="{% url 'kitchen:dishtype-delete' pk=dishtype.id %}"
+                {% endif %}
+              method="post">
+            {% csrf_token %}
+
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>

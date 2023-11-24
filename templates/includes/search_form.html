@@ -1,0 +1,27 @@
+{% load crispy_forms_filters %}
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 m-auto">
+          <div class="row">
+            <div class="col-8">
+                <form
+                    id="search-form"
+                    method="get"
+                    action="">
+                    {{ search_form|crispy }}
+                </form>
+            </div>
+            <div class="col-4 ps-0">
+              <button
+                  type="submit"
+                  class="btn bg-gradient-info mb-0 position-relative z-index-2"
+                  form="search-form"
+              >
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

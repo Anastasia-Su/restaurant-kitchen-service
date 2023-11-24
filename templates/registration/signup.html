@@ -1,0 +1,49 @@
+{% extends 'layouts/base_sections.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block body %} class="sign-in-illustration" {% endblock body %}
+{% block header %}{% endblock header %}
+
+{% block content %}
+  <section>
+    <div class="page-header min-vh-70">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto align-items-center">
+            <div class="card card-plain">
+              <div class="card-header pb-0 text-left">
+                <h4 class="font-weight-bolder">Sign Up</h4>
+              </div>
+              <div class="card-body">
+                <form method="post" action="#" role="form">
+                  {% csrf_token %}
+                  {{ form|crispy }}
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign Up</button>
+                  </div>
+                </form>
+              </div>
+              <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                <p class="mb-4 text-sm mx-auto">
+                  Already have an account?
+                  <a href="{% url 'login' %}" class="text-primary text-gradient font-weight-bold">Log In</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-lg-5 position-relative bg-cover px-0"
+            style="background-image: url('{% static 'css/img/curved-images/curved1.jpg' %}')">
+            <div class="position-absolute z-index-2 w-100 h-100 top-0 start-0 d-lg-block d-none">
+              <img
+                  src="{% static 'css/img/wave-1.svg' %}"
+                  class="h-100 ms-n2"
+                  alt="vertical-wave">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
