@@ -116,9 +116,10 @@ class DishListView(LoginRequiredMixin, generic.ListView):
             "price": "price",
             "dish_type": "dish_type__name",
         }
-        for key, value in sort_by_dict.items():
-            if sort_by == key:
-                queryset = queryset.order_by(value)
+
+        sort_by_keyword = sort_by_dict.get(sort_by)
+        if sort_by_keyword is not None:
+            queryset = queryset.order_by(sort_by_keyword)
 
         return queryset
 
