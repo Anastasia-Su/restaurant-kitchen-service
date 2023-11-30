@@ -31,7 +31,10 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 # DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "https://restaurant-kitchen-service-90be.onrender.com"
+]
 
 INTERNAL_IPS = [
     "127.0.0.1",
