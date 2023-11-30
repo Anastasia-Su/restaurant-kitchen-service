@@ -33,7 +33,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
-    "https://restaurant-kitchen-service-90be.onrender.com"
+    "restaurant-kitchen-service-90be.onrender.com"
 ]
 
 INTERNAL_IPS = [
