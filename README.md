@@ -21,3 +21,7 @@ pip install -r requirements.txt
 * Authentication functionality for cooks (users)
 * Managing dishes and dish types directly from website interface
 * Admin panel for advanced managing
+
+## Test user
+* Login: test.user
+* Password: 3edczaq1
