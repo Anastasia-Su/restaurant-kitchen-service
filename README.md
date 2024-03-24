@@ -1,5 +1,3 @@
-![Logo of the project](https://raw.githubusercontent.com/jehna/readme-best-practices/master/sample-logo.png)
-
 # Kitchen Service
 > Django project for managing cooks, dishes and dish types in Kitchen.
 
