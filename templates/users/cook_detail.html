@@ -1,0 +1,85 @@
+{% extends 'layouts/base_sections.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block body %} class="blog-author" {% endblock body %}
+{% block header %}{% endblock header %}
+
+{% block content %}
+  <section class="py-sm-7 py-5 position-relative">
+    <div class="container" id="cooks-container">
+      <div class="row">
+        <div class="col-12 mx-auto">
+          <div class="row py-lg-7 py-5">
+            <div class="col-lg-3 col-md-5 position-relative">
+              <img
+                  class="img border-radius-lg max-width-200 w-100 position-relative z-index-2"
+                  src="{% static 'css/img/bruce-mars.jpg' %}"
+                  alt="bruce">
+            </div>
+            <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mt-sm-0 mt-4">
+              <div class="d-flex justify-content-between align-items-center mb-2 me-1">
+                <h4 class="mb-0">{{ cook.first_name }} {{ cook.last_name }}</h4>
+                <div class="d-flex justify-content-between">
+                  <a href="{% url 'users:cook-update' pk=cook.id %}">
+                    {% include "includes/update_btn.html" %}
+                  </a>
+                  <a href="#" class="openModalBtn">
+                    {% include "includes/delete_btn.html" %}
+                  </a>
+                </div>
+              </div>
+              <div class="row mb-4">
+                <div class="col-auto">
+                  <span>Years of experience:</span>
+                  <span class="h6">
+                    {{ cook.get_years_of_experience }}
+                  </span>
+                  <br />
+                  <span>Dishes I cook:</span>
+                  <span class="h6">
+                    <a
+                        href="#"
+                        class="text-info toggle-link"
+                        data-target="dishes-content"
+                    >
+                      {{ cook.dishes.count }}
+                    </a>
+
+                  </span>
+                </div>
+              </div>
+              <p class="text-lg mb-0">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Mollitia facere dolore voluptatum velit consequuntur dolor excepturi eum!
+                Nisi ratione voluptas fugit, blanditiis,
+                dicta consequatur delectus quisquam dignissimos molestiae pariatur architecto.
+                Nemo nam ipsam reprehenderit labore!
+                <br/><br/>
+
+                <div id="dishes-content" style="display: none;">
+                  {% for dish in cook.dishes.all %}
+                    <a
+                        href="{% url "kitchen:dish-detail" pk=dish.id %}"
+                        class="text-info icon-move-right"
+                        style="margin-top: 5px; display: inline-block;">
+                        {{ dish.name }} ({{ dish.dish_type.name }})
+                        <i class="fas fa-arrow-right text-sm ms-1"></i>
+                    </a>
+                    <br />
+                  {% endfor %}
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% include 'includes/confirm_delete_modal_cook.html' %}
+{% endblock content %}
+
+{% block javascripts %}
+  <script src="/static/js/toggle_content_on_detail_page.js"></script>
+  <script src="/static/js/delete_modal_cook_dish.js"></script>
+  <script src="/static/js/toggle_hamburger_menu.js"></script>
+{% endblock javascripts %}

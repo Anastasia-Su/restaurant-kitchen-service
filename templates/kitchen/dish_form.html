@@ -1,0 +1,95 @@
+{% extends 'layouts/base_sections.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block header %}
+{% endblock header %}
+{% block content %}
+  <section class="py-lg-7">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card overflow-hidden mb-5">
+            <div class="row">
+              <div class="col-lg-7">
+                <form
+                    action=""
+                    class="p-3"
+                    id="dish-form"
+                    method="post">
+                  <div class="card-header px-4 py-sm-5 py-3">
+                    <h2>{{ object|yesno:"Update,Create" }} Dish</h2>
+                  </div>
+                  <div class="card-body pt-1">
+                    <div class="row">
+                      {% csrf_token %}
+                      {% for field in form %}
+                          {% if not forloop.last %}
+                            {{ field|as_crispy_field }}
+                              <hr />
+                          {% else %}
+                            <div id="ingred-menu" style="display: none;">
+                            {{ field|as_crispy_field }}
+                            </div>
+                          {% endif %}
+                      {% endfor %}
+                        <div class="field-lbl" style="display: block";>
+                          <a
+                              href="#"
+                              data-target="ingred-menu"
+                              class="toggle-link fw-bolder"
+                              style="font-size: 12px;">
+                            Ingredients
+                            <i class="my-arrow fas fa-arrow-right text-sm ms-1"></i>
+                          </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 text-end ms-auto">
+                        <button
+                            type="submit"
+                            class="btn btn-round bg-gradient-info mb-0">
+                          {{ object|yesno:"Update,Create" }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div
+                  class="col-lg-5 position-relative bg-cover px-0"
+                  style="background-image: url('{% static 'css/img/curved-images/curved5.jpg' %}')">
+                <div class="position-absolute z-index-2 w-100 h-100 top-0 start-0 d-lg-block d-none">
+                  <img
+                      src="{% static 'css/img/wave-1.svg' %}"
+                      class="h-100 ms-n2"
+                      alt="vertical-wave">
+                </div>
+                <div class="z-index-2 text-center d-flex h-100 w-100 d-flex m-auto justify-content-center">
+                  <div class="mask bg-gradient-info opacity-9"></div>
+                  <div class="p-5 ps-sm-8 position-relative text-end my-auto z-index-2">
+                    {% if object %}
+                      <div class="">
+                        <h3 class="text-white">{{ dish.name }}<br />({{ dish.dish_type.name }})</h3>
+                        <p class="text-white opacity-8 mb-4">{{ dish.description }}</p>
+                          <div class="ps-3 text-white">
+                            <i class="fas fa-dollar-sign text-sm"></i>
+                            {{ dish.price }}
+                          </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block javascripts %}
+  <script src="/static/js/toggle_content_dishform.js"></script>
+  <script src="/static/js/toggle_hamburger_menu.js"></script>
+{% endblock javascripts %}

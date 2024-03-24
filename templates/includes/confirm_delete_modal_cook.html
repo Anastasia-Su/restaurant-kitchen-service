@@ -1,0 +1,23 @@
+<div
+    class="modal"
+    tabindex="-1"
+    role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h5 class="modal-title">
+          Are you sure you want to delete {{ cook.first_name }} {{ cook.last_name }}?
+        </h5>
+      </div>
+
+      <div class="modal-footer justify-content-center">
+          <form action="{% url 'users:cook-delete' pk=cook.id %}" method="post">
+          {% csrf_token %}
+
+          <button type="submit" class="btn btn-danger">Delete</button>
+          <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
